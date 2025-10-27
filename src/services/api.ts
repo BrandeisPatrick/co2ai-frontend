@@ -1,8 +1,4 @@
-import { DashboardData, Equipment, JSONBinResponse, JSONBinExperiment } from '../types'
-
-// JSONBin configuration from environment variables
-const JSONBIN_BIN_ID = import.meta.env.VITE_JSONBIN_BIN_ID
-const JSONBIN_MASTER_KEY = import.meta.env.VITE_JSONBIN_MASTER_KEY
+import { DashboardData, Equipment, JSONBinExperiment } from '../types'
 
 // Mock equipment data - single demo equipment
 const mockEquipment: Equipment[] = [
@@ -22,26 +18,27 @@ const mockEquipment: Equipment[] = [
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
- * Fetch data from JSONBin
+ * Fetch data from secure backend API
  */
-async function fetchFromJSONBin(): Promise<JSONBinExperiment[]> {
+async function fetchEquipmentData(): Promise<JSONBinExperiment[]> {
   try {
-    const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+    const response = await fetch('/api/equipment', {
       method: 'GET',
-      headers: {
-        'X-Master-Key': JSONBIN_MASTER_KEY,
-        'X-Access-Key': JSONBIN_MASTER_KEY
-      }
     })
 
     if (!response.ok) {
-      throw new Error(`JSONBin API error: ${response.status}`)
+      throw new Error(`API error: ${response.status}`)
     }
 
-    const data: JSONBinResponse = await response.json()
-    return data.record
+    const result = await response.json()
+
+    if (!result.success) {
+      throw new Error('API returned error')
+    }
+
+    return result.data
   } catch (error) {
-    console.error('Failed to fetch from JSONBin:', error)
+    console.error('Failed to fetch equipment data:', error)
     // Return empty array on error
     return []
   }
@@ -159,8 +156,8 @@ export const apiService = {
    */
   async getEquipment(): Promise<Equipment[]> {
     try {
-      // Fetch data from JSONBin
-      const experiments = await fetchFromJSONBin()
+      // Fetch data from secure backend API
+      const experiments = await fetchEquipmentData()
 
       // Transform experiments to equipment
       const equipment = experiments.map(transformExperimentToEquipment)
