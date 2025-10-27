@@ -13,7 +13,8 @@
       "Read(//c/Users/brand/**)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(vercel --prod:*)"
     ],
     "deny": [],
     "ask": []
