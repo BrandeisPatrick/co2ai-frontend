@@ -26,19 +26,19 @@ export class MockTimeSeriesDatabase {
 
   /**
    * Generate historical snapshots from current equipment data
+   * Creates ONE snapshot per calendar day with daily aggregated values
    */
   generateHistory(equipment: Equipment[]): TimeSeriesSnapshot[] {
     this.snapshots = []
 
-    // Generate snapshots for the past N days
+    // Generate snapshots for the past N days (one per calendar day)
     for (let daysAgo = this.DAYS_OF_HISTORY; daysAgo >= 0; daysAgo--) {
       const snapshotDate = this.getDateNDaysAgo(daysAgo)
       const dayOfWeek = snapshotDate.getDay()
-      const hourOfDay = Math.floor(Math.random() * 24)
 
-      // Create historical snapshot with variations
+      // Create historical snapshot with daily variations (not hourly)
       const historicalEquipment = equipment.map((eq) =>
-        this.applyTemporalVariations(eq, dayOfWeek, hourOfDay, daysAgo)
+        this.applyDailyVariations(eq, dayOfWeek, daysAgo)
       )
 
       this.snapshots.push({
@@ -51,29 +51,30 @@ export class MockTimeSeriesDatabase {
   }
 
   /**
-   * Apply realistic temporal variations to equipment data
+   * Apply realistic daily variations to equipment data
+   * Only applies daily-level variations (weekend, seasonal, random)
+   * Does NOT apply hourly variations since we're working with daily aggregates
    */
-  private applyTemporalVariations(
+  private applyDailyVariations(
     equipment: Equipment,
     dayOfWeek: number,
-    hourOfDay: number,
     daysAgo: number
   ): Equipment {
     // Weekend factor (0.7 on weekends, 1.0 on weekdays)
+    // Lab equipment typically has lower usage on weekends
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
     const weekendFactor = isWeekend ? 0.7 : 1.0
 
-    // Time of day factor (peaks during work hours 9-17)
-    const timeOfDayFactor = this.getTimeOfDayFactor(hourOfDay)
-
     // Seasonal trend (slight increase over time)
+    // Simulates increasing lab activity as projects progress
     const trendFactor = 1.0 + (this.DAYS_OF_HISTORY - daysAgo) / this.DAYS_OF_HISTORY * 0.1
 
-    // Random natural variation
-    const randomVariation = 0.85 + Math.random() * 0.3 // ±15%
+    // Random natural variation (±15%)
+    // Accounts for day-to-day operational variations
+    const randomVariation = 0.85 + Math.random() * 0.3
 
-    // Apply all factors
-    const combinedFactor = weekendFactor * timeOfDayFactor * trendFactor * randomVariation
+    // Apply daily factors only (no hourly variation)
+    const combinedFactor = weekendFactor * trendFactor * randomVariation
 
     return {
       ...equipment,
@@ -85,23 +86,6 @@ export class MockTimeSeriesDatabase {
         ...equipment.dailyEmissions,
         value: Number((equipment.dailyEmissions.value * combinedFactor).toFixed(2)),
       },
-    }
-  }
-
-  /**
-   * Get time of day factor for usage patterns
-   * Higher during work hours (9-17), lower at night
-   */
-  private getTimeOfDayFactor(hour: number): number {
-    if (hour >= 9 && hour <= 17) {
-      // Peak hours
-      return 1.2
-    } else if (hour >= 7 && hour <= 19) {
-      // Moderate hours
-      return 0.9
-    } else {
-      // Night hours
-      return 0.4
     }
   }
 
@@ -133,48 +117,52 @@ export class MockTimeSeriesDatabase {
 
   /**
    * Get daily aggregated data (for chart display)
+   * Aggregates all equipment values for each day
    */
   getDailyAggregates(days: number = 30) {
     const now = new Date()
     const startDate = new Date(now)
     startDate.setDate(startDate.getDate() - days)
+    startDate.setHours(0, 0, 0, 0) // Start of day
 
     const dailyData: {
       [key: string]: {
         date: Date
         totalEmissions: number
         totalConsumption: number
-        count: number
       }
     } = {}
 
-    // Group snapshots by day
+    // Aggregate snapshots by calendar day
     this.snapshots.forEach((snapshot) => {
-      // Only include snapshots from the requested time range
       if (snapshot.date < startDate) return
+
       const dateKey = snapshot.date.toISOString().split('T')[0]
 
       if (!dailyData[dateKey]) {
+        const date = new Date(snapshot.date)
+        date.setHours(0, 0, 0, 0)
         dailyData[dateKey] = {
-          date: new Date(snapshot.date),
+          date,
           totalEmissions: 0,
           totalConsumption: 0,
-          count: 0,
         }
       }
 
+      // Sum all equipment values for this day
       snapshot.equipment.forEach((eq) => {
+        // dailyEmissions.value is already a daily total
         dailyData[dateKey].totalEmissions += eq.dailyEmissions.value
-        dailyData[dateKey].totalConsumption += eq.powerDraw.value * 24 // Convert to daily kWh
+        // powerDraw.value is hourly average, multiply by 24 to get daily consumption
+        dailyData[dateKey].totalConsumption += eq.powerDraw.value * 24
       })
-      dailyData[dateKey].count += 1
     })
 
-    // Convert to array and sort by date
+    // Convert to array, sort by date, and format
     return Object.values(dailyData)
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .map((daily) => ({
-        date: daily.date,
+        date: daily.date.toISOString().split('T')[0], // Return date as string (YYYY-MM-DD)
         emissions: Math.round(daily.totalEmissions),
         consumption: Math.round(daily.totalConsumption),
       }))
@@ -182,11 +170,13 @@ export class MockTimeSeriesDatabase {
 
   /**
    * Get weekly aggregated data
+   * Sums daily values (7 days per week)
    */
   getWeeklyAggregates(weeks: number = 12) {
     const now = new Date()
     const startDate = new Date(now)
     startDate.setDate(startDate.getDate() - weeks * 7)
+    startDate.setHours(0, 0, 0, 0)
 
     const weeklyData: {
       [key: string]: {
@@ -194,10 +184,10 @@ export class MockTimeSeriesDatabase {
         year: number
         totalEmissions: number
         totalConsumption: number
-        count: number
       }
     } = {}
 
+    // Aggregate by week
     this.snapshots.forEach((snapshot) => {
       if (snapshot.date < startDate) return
 
@@ -211,15 +201,14 @@ export class MockTimeSeriesDatabase {
           year,
           totalEmissions: 0,
           totalConsumption: 0,
-          count: 0,
         }
       }
 
+      // Sum all equipment values
       snapshot.equipment.forEach((eq) => {
         weeklyData[key].totalEmissions += eq.dailyEmissions.value
         weeklyData[key].totalConsumption += eq.powerDraw.value * 24
       })
-      weeklyData[key].count += 1
     })
 
     return Object.values(weeklyData)
@@ -239,24 +228,28 @@ export class MockTimeSeriesDatabase {
 
   /**
    * Get monthly aggregated data
+   * Sums daily values by calendar month
    */
   getMonthlyAggregates(months: number = 12) {
     const now = new Date()
     const startDate = new Date(now)
     startDate.setMonth(startDate.getMonth() - months)
+    startDate.setDate(1) // Start from first day of month
+    startDate.setHours(0, 0, 0, 0)
 
     const monthlyData: {
       [key: string]: {
         month: string
+        monthNumber: number
         year: number
         totalEmissions: number
         totalConsumption: number
-        count: number
       }
     } = {}
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+    // Aggregate by calendar month
     this.snapshots.forEach((snapshot) => {
       if (snapshot.date < startDate) return
 
@@ -267,24 +260,24 @@ export class MockTimeSeriesDatabase {
       if (!monthlyData[key]) {
         monthlyData[key] = {
           month: monthNames[month],
+          monthNumber: month,
           year,
           totalEmissions: 0,
           totalConsumption: 0,
-          count: 0,
         }
       }
 
+      // Sum all equipment values for each day
       snapshot.equipment.forEach((eq) => {
         monthlyData[key].totalEmissions += eq.dailyEmissions.value
         monthlyData[key].totalConsumption += eq.powerDraw.value * 24
       })
-      monthlyData[key].count += 1
     })
 
     return Object.values(monthlyData)
       .sort((a, b) => {
-        const aDate = new Date(a.year, monthNames.indexOf(a.month))
-        const bDate = new Date(b.year, monthNames.indexOf(b.month))
+        const aDate = new Date(a.year, a.monthNumber)
+        const bDate = new Date(b.year, b.monthNumber)
         return aDate.getTime() - bDate.getTime()
       })
       .map((monthly) => ({

@@ -6,6 +6,15 @@ import TopEquipmentChart from '../components/dashboard/TopEquipmentChart'
 import PredictiveAlerts from '../components/dashboard/PredictiveAlerts'
 import { useDataContext } from '../hooks/useDataContext'
 import { DashboardData } from '../types'
+import {
+  getCurrentMonthData,
+  getPreviousMonthData,
+  sumConsumption,
+  sumEmissions,
+  calculatePercentageChange,
+  kWhToMWh,
+  kgToTons,
+} from '../utils/timeSeriesHelpers'
 
 export default function Dashboard() {
   const { store, isLoading, error, syncData } = useDataContext()
@@ -13,32 +22,35 @@ export default function Dashboard() {
 
   // Derive dashboard data from store using historical data
   const data: DashboardData | null = useMemo(() => {
-    if (!store.equipment || store.equipment.length === 0 || !store.historicalData) {
+    if (!store.equipment || store.equipment.length === 0 || !store.historicalData || !store.historicalData.daily) {
       return null
     }
 
-    // Calculate current metrics from equipment data
+    // Current day metrics from equipment
     const totalEmissions = store.equipment.reduce((sum, eq) => sum + eq.dailyEmissions.value, 0)
     const activeCount = store.equipment.filter(eq => eq.status === 'active').length
 
-    // Use historical monthly data for trends
-    const monthlyData = store.historicalData.monthly
+    // Get current and previous month data from daily aggregates
+    const dailyData = store.historicalData.daily
+    const currentMonthData = getCurrentMonthData(dailyData)
+    const previousMonthData = getPreviousMonthData(dailyData)
 
-    // Calculate month-over-month change
-    const lastMonth = monthlyData.length > 0 ? monthlyData[monthlyData.length - 1].emissions : 0
-    const previousMonth = monthlyData.length > 1 ? monthlyData[monthlyData.length - 2].emissions : lastMonth
-    const emissionsChange = previousMonth > 0 ? Math.round(((lastMonth - previousMonth) / previousMonth) * 100) : 5
+    // Calculate monthly totals
+    const currentMonthEmissions = sumEmissions(currentMonthData)
+    const previousMonthEmissions = sumEmissions(previousMonthData)
+    const currentMonthConsumption = sumConsumption(currentMonthData)
+    const previousMonthConsumption = sumConsumption(previousMonthData)
 
-    const lastMonthConsumption = monthlyData.length > 0 ? monthlyData[monthlyData.length - 1].consumption : 0
-    const previousMonthConsumption = monthlyData.length > 1 ? monthlyData[monthlyData.length - 2].consumption : lastMonthConsumption
-    const consumptionChange = previousMonthConsumption > 0 ? Math.round(((lastMonthConsumption - previousMonthConsumption) / previousMonthConsumption) * 100) : 8
+    // Calculate month-over-month changes
+    const emissionsChangeData = calculatePercentageChange(currentMonthEmissions, previousMonthEmissions)
+    const consumptionChangeData = calculatePercentageChange(currentMonthConsumption, previousMonthConsumption)
 
     return {
       emissions: {
-        total: Number((totalEmissions / 1000).toFixed(2)), // Convert to tCO2e
+        total: kgToTons(totalEmissions), // Convert to tCO2e
         unit: 'tCO₂e',
-        percentageChange: emissionsChange,
-        changeType: emissionsChange >= 0 ? ('increase' as const) : ('decrease' as const),
+        percentageChange: Math.round(emissionsChangeData.change),
+        changeType: emissionsChangeData.type,
       },
       activeEquipment: {
         count: activeCount,
@@ -53,13 +65,13 @@ export default function Dashboard() {
         improvement: true,
       },
       monthlyConsumption: {
-        value: Number((lastMonthConsumption / 1000).toFixed(2)), // Convert to MWh
+        value: kWhToMWh(currentMonthConsumption),
         unit: 'MWh',
-        percentageChange: consumptionChange,
-        changeType: consumptionChange >= 0 ? ('increase' as const) : ('decrease' as const),
+        percentageChange: Math.round(consumptionChangeData.change),
+        changeType: consumptionChangeData.type,
       },
       // Use real monthly trends from historical data
-      monthlyTrend: monthlyData.map((month) => ({
+      monthlyTrend: store.historicalData.monthly.map((month) => ({
         month: month.name,
         emissions: month.emissions,
       })),

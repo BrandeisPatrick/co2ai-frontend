@@ -1,7 +1,7 @@
 import { Equipment, JSONBinExperiment } from '../types';
 
 export interface HistoricalData {
-  daily: Array<{ date: Date; emissions: number; consumption: number }>;
+  daily: Array<{ date: string; emissions: number; consumption: number }>;
   weekly: Array<{ name: string; emissions: number; consumption: number }>;
   monthly: Array<{ name: string; emissions: number; consumption: number }>;
 }

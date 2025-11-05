@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
 import { useDataContext } from '../hooks/useDataContext'
+import { formatConsumption, formatEmissions } from '../utils/timeSeriesHelpers'
 
 type TimeRange = 'week' | 'month' | 'year'
 
@@ -37,27 +38,33 @@ export default function Analytics() {
 
   // Use real historical data from the data store
   const analyticsData: AnalyticsDataSet | null = useMemo(() => {
-    if (!store.historicalData || !store.equipment || store.equipment.length === 0) {
+    if (!store.historicalData || !store.equipment || store.equipment.length === 0 || !store.historicalData.daily) {
       return null
     }
 
     // Get the last 7 days of data for week view
     const weekData = store.historicalData.daily
       .slice(-7)
-      .map((day) => ({
-        name: new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }),
-        emissions: day.emissions,
-        consumption: day.consumption,
-      }))
+      .map((day) => {
+        const date = new Date(day.date + 'T00:00:00')
+        return {
+          name: date.toLocaleDateString('en-US', { weekday: 'short' }),
+          emissions: day.emissions,
+          consumption: day.consumption,
+        }
+      })
 
     // Get the last 30 days of data for month view
     const monthData = store.historicalData.daily
       .slice(-30)
-      .map((day) => ({
-        name: `Day ${new Date(day.date).getDate()}`,
-        emissions: day.emissions,
-        consumption: day.consumption,
-      }))
+      .map((day) => {
+        const date = new Date(day.date + 'T00:00:00')
+        return {
+          name: `Day ${date.getDate()}`,
+          emissions: day.emissions,
+          consumption: day.consumption,
+        }
+      })
 
     // Use monthly aggregates for year view
     const yearData = store.historicalData.monthly.map((month) => ({
@@ -125,9 +132,15 @@ export default function Analytics() {
 
   // Calculate statistics
   const totalEmissions = data.reduce((sum, item) => sum + item.emissions, 0)
-  const avgEmissions = (totalEmissions / data.length).toFixed(1)
+  const avgEmissions = totalEmissions / data.length
   const totalConsumption = data.reduce((sum, item) => sum + item.consumption, 0)
-  const avgConsumption = (totalConsumption / data.length).toFixed(1)
+  const avgConsumption = totalConsumption / data.length
+
+  // Format values with appropriate units
+  const totalEmissionsFormatted = formatEmissions(totalEmissions)
+  const avgEmissionsFormatted = formatEmissions(avgEmissions)
+  const totalConsumptionFormatted = formatConsumption(totalConsumption)
+  const avgConsumptionFormatted = formatConsumption(avgConsumption)
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -158,23 +171,23 @@ export default function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Emissions</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalEmissions.toFixed(0)}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">kgCO₂e</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalEmissionsFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{totalEmissionsFormatted.unit}</p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Avg Emissions</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgEmissions}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">kgCO₂e</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgEmissionsFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgEmissionsFormatted.unit}</p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Consumption</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalConsumption.toFixed(0)}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">kWh</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalConsumptionFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{totalConsumptionFormatted.unit}</p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Avg Consumption</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgConsumption}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">kWh</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgConsumptionFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgConsumptionFormatted.unit}</p>
         </div>
       </div>
 
