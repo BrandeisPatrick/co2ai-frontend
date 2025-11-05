@@ -1,6 +1,6 @@
 import { DashboardData, Equipment, JSONBinExperiment } from '../types'
 
-// Mock equipment data - single demo equipment
+// Mock equipment data - comprehensive lab equipment
 const mockEquipment: Equipment[] = [
   {
     id: '1',
@@ -9,8 +9,118 @@ const mockEquipment: Equipment[] = [
     manufacturer: 'Thermo Fisher Scientific',
     type: 'Ultra-Low Freezer',
     status: 'active',
-    powerDraw: { value: 5, unit: 'kW' },
+    powerDraw: { value: 5.2, unit: 'kW' },
     dailyEmissions: { value: 120, unit: 'kgCO₂e' }
+  },
+  {
+    id: '2',
+    name: 'CO2 Incubator Pro',
+    equipmentId: '#002',
+    manufacturer: 'Esco Technologies',
+    type: 'CO2 Incubator',
+    status: 'active',
+    powerDraw: { value: 2.8, unit: 'kW' },
+    dailyEmissions: { value: 65, unit: 'kgCO₂e' }
+  },
+  {
+    id: '3',
+    name: 'Biosafety Cabinet Class II',
+    equipmentId: '#003',
+    manufacturer: 'Nuaire',
+    type: 'Biosafety Cabinet',
+    status: 'active',
+    powerDraw: { value: 1.5, unit: 'kW' },
+    dailyEmissions: { value: 35, unit: 'kgCO₂e' }
+  },
+  {
+    id: '4',
+    name: 'Autoclave Sterilizer',
+    equipmentId: '#004',
+    manufacturer: 'MELAG',
+    type: 'Autoclave',
+    status: 'active',
+    powerDraw: { value: 3.2, unit: 'kW' },
+    dailyEmissions: { value: 75, unit: 'kgCO₂e' }
+  },
+  {
+    id: '5',
+    name: 'Real-Time PCR System',
+    equipmentId: '#005',
+    manufacturer: 'Applied Biosystems',
+    type: 'PCR Machine',
+    status: 'active',
+    powerDraw: { value: 1.2, unit: 'kW' },
+    dailyEmissions: { value: 28, unit: 'kgCO₂e' }
+  },
+  {
+    id: '6',
+    name: 'High-Speed Microcentrifuge',
+    equipmentId: '#006',
+    manufacturer: 'Eppendorf',
+    type: 'Centrifuge',
+    status: 'idle',
+    powerDraw: { value: 0.8, unit: 'kW' },
+    dailyEmissions: { value: 18, unit: 'kgCO₂e' }
+  },
+  {
+    id: '7',
+    name: 'Inverted Fluorescence Microscope',
+    equipmentId: '#007',
+    manufacturer: 'Olympus',
+    type: 'Microscope',
+    status: 'active',
+    powerDraw: { value: 0.6, unit: 'kW' },
+    dailyEmissions: { value: 14, unit: 'kgCO₂e' }
+  },
+  {
+    id: '8',
+    name: 'UV-Vis Spectrophotometer',
+    equipmentId: '#008',
+    manufacturer: 'Shimadzu',
+    type: 'Spectrophotometer',
+    status: 'active',
+    powerDraw: { value: 0.4, unit: 'kW' },
+    dailyEmissions: { value: 9, unit: 'kgCO₂e' }
+  },
+  {
+    id: '9',
+    name: 'Ultra-Low Freezer -80°C (2nd Unit)',
+    equipmentId: '#009',
+    manufacturer: 'Thermo Fisher Scientific',
+    type: 'Ultra-Low Freezer',
+    status: 'active',
+    powerDraw: { value: 5.1, unit: 'kW' },
+    dailyEmissions: { value: 118, unit: 'kgCO₂e' }
+  },
+  {
+    id: '10',
+    name: 'CO2 Incubator Standard',
+    equipmentId: '#010',
+    manufacturer: 'Panasonic',
+    type: 'CO2 Incubator',
+    status: 'active',
+    powerDraw: { value: 2.5, unit: 'kW' },
+    dailyEmissions: { value: 58, unit: 'kgCO₂e' }
+  },
+  {
+    id: '11',
+    name: 'Benchtop Centrifuge',
+    equipmentId: '#011',
+    manufacturer: 'Heraeus',
+    type: 'Centrifuge',
+    status: 'maintenance',
+    powerDraw: { value: 1.0, unit: 'kW' },
+    dailyEmissions: { value: 23, unit: 'kgCO₂e' }
+  },
+  {
+    id: '12',
+    name: 'Liquid Nitrogen Tank',
+    equipmentId: '#012',
+    manufacturer: 'Chart Industries',
+    type: 'Ultra-Low Freezer',
+    status: 'active',
+    powerDraw: { value: 2.0, unit: 'kW' },
+    dailyEmissions: { value: 46, unit: 'kgCO₂e' }
   }
 ]
 
@@ -194,6 +304,98 @@ export const apiService = {
     mockEquipment.push(newEquipment)
 
     return newEquipment
+  },
+
+  /**
+   * Fetch analytics data for charts
+   */
+  async getAnalyticsData(): Promise<{
+    week: Array<{ name: string; emissions: number; consumption: number }>
+    month: Array<{ name: string; emissions: number; consumption: number }>
+    year: Array<{ name: string; emissions: number; consumption: number }>
+  }> {
+    try {
+      const equipment = await this.getEquipment()
+
+      if (equipment.length === 0) {
+        throw new Error('No equipment data available')
+      }
+
+      // Calculate average daily values from equipment
+      const avgDailyEmissions =
+        equipment.reduce((sum, e) => sum + e.dailyEmissions.value, 0) /
+        equipment.length
+      const avgDailyConsumption =
+        equipment.reduce((sum, e) => sum + e.powerDraw.value * 24, 0) /
+        equipment.length // kW * 24 hours = kWh
+
+      // Generate week data (7 days with variation)
+      const weekData = Array.from({ length: 7 }, (_, i) => {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        const variation = 0.8 + Math.random() * 0.4 // 0.8 to 1.2 variation
+        return {
+          name: days[i],
+          emissions: parseFloat((avgDailyEmissions * variation).toFixed(1)),
+          consumption: parseFloat(
+            (avgDailyConsumption * variation).toFixed(0)
+          )
+        }
+      })
+
+      // Generate month data (4 weeks)
+      const monthData = Array.from({ length: 4 }, (_, i) => {
+        const variation = 0.85 + Math.random() * 0.3
+        const weekEmissions = weekData.reduce((sum, d) => sum + d.emissions, 0)
+        const weekConsumption = weekData.reduce(
+          (sum, d) => sum + d.consumption,
+          0
+        )
+        return {
+          name: `Week ${i + 1}`,
+          emissions: parseFloat((weekEmissions * variation).toFixed(0)),
+          consumption: parseFloat((weekConsumption * variation).toFixed(0))
+        }
+      })
+
+      // Generate year data (12 months)
+      const yearData = Array.from({ length: 12 }, (_, i) => {
+        const months = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec'
+        ]
+        const variation = 0.9 + Math.random() * 0.2
+        const monthEmissions = monthData.reduce((sum, d) => sum + d.emissions, 0)
+        const monthConsumption = monthData.reduce(
+          (sum, d) => sum + d.consumption,
+          0
+        )
+        return {
+          name: months[i],
+          emissions: parseFloat((monthEmissions * variation).toFixed(0)),
+          consumption: parseFloat((monthConsumption * variation).toFixed(0))
+        }
+      })
+
+      return { week: weekData, month: monthData, year: yearData }
+    } catch (error) {
+      console.error('Failed to fetch analytics data:', error)
+      // Return empty data structure on error
+      return {
+        week: [],
+        month: [],
+        year: []
+      }
+    }
   },
 
   /**

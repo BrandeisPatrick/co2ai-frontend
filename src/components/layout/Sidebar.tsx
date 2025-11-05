@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   Package,
-  Plug,
   FileText,
   BarChart3,
   Settings,
@@ -18,7 +17,6 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
   { name: 'Equipment Inventory', path: '/equipment', icon: <Package size={20} /> },
-  { name: 'API Integrations', path: '/integrations', icon: <Plug size={20} /> },
   { name: 'Reports', path: '/reports', icon: <FileText size={20} /> },
   { name: 'Analytics', path: '/analytics', icon: <BarChart3 size={20} /> },
   { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
