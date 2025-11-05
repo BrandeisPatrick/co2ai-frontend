@@ -10,7 +10,8 @@ const mockEquipment: Equipment[] = [
     type: 'Ultra-Low Freezer',
     status: 'active',
     powerDraw: { value: 5.2, unit: 'kW' },
-    dailyEmissions: { value: 120, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 120, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   },
   {
     id: '2',
@@ -20,7 +21,8 @@ const mockEquipment: Equipment[] = [
     type: 'CO2 Incubator',
     status: 'active',
     powerDraw: { value: 2.8, unit: 'kW' },
-    dailyEmissions: { value: 65, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 65, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   },
   {
     id: '3',
@@ -30,7 +32,8 @@ const mockEquipment: Equipment[] = [
     type: 'Biosafety Cabinet',
     status: 'active',
     powerDraw: { value: 1.5, unit: 'kW' },
-    dailyEmissions: { value: 35, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 35, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   },
   {
     id: '4',
@@ -38,9 +41,11 @@ const mockEquipment: Equipment[] = [
     equipmentId: '#004',
     manufacturer: 'MELAG',
     type: 'Autoclave',
-    status: 'active',
+    status: 'faulty',
     powerDraw: { value: 3.2, unit: 'kW' },
-    dailyEmissions: { value: 75, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 75, unit: 'kgCO₂e' },
+    category: 'wet-lab',
+    errorMessage: 'Temperature sensor malfunction - calibration required'
   },
   {
     id: '5',
@@ -50,7 +55,8 @@ const mockEquipment: Equipment[] = [
     type: 'PCR Machine',
     status: 'active',
     powerDraw: { value: 1.2, unit: 'kW' },
-    dailyEmissions: { value: 28, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 28, unit: 'kgCO₂e' },
+    category: 'dry-lab'
   },
   {
     id: '6',
@@ -60,7 +66,8 @@ const mockEquipment: Equipment[] = [
     type: 'Centrifuge',
     status: 'idle',
     powerDraw: { value: 0.8, unit: 'kW' },
-    dailyEmissions: { value: 18, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 18, unit: 'kgCO₂e' },
+    category: 'dry-lab'
   },
   {
     id: '7',
@@ -70,7 +77,8 @@ const mockEquipment: Equipment[] = [
     type: 'Microscope',
     status: 'active',
     powerDraw: { value: 0.6, unit: 'kW' },
-    dailyEmissions: { value: 14, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 14, unit: 'kgCO₂e' },
+    category: 'dry-lab'
   },
   {
     id: '8',
@@ -78,9 +86,11 @@ const mockEquipment: Equipment[] = [
     equipmentId: '#008',
     manufacturer: 'Shimadzu',
     type: 'Spectrophotometer',
-    status: 'active',
+    status: 'faulty',
     powerDraw: { value: 0.4, unit: 'kW' },
-    dailyEmissions: { value: 9, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 9, unit: 'kgCO₂e' },
+    category: 'dry-lab',
+    errorMessage: 'Light source not functioning properly - lamp replacement needed'
   },
   {
     id: '9',
@@ -90,7 +100,8 @@ const mockEquipment: Equipment[] = [
     type: 'Ultra-Low Freezer',
     status: 'active',
     powerDraw: { value: 5.1, unit: 'kW' },
-    dailyEmissions: { value: 118, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 118, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   },
   {
     id: '10',
@@ -100,7 +111,8 @@ const mockEquipment: Equipment[] = [
     type: 'CO2 Incubator',
     status: 'active',
     powerDraw: { value: 2.5, unit: 'kW' },
-    dailyEmissions: { value: 58, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 58, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   },
   {
     id: '11',
@@ -110,7 +122,8 @@ const mockEquipment: Equipment[] = [
     type: 'Centrifuge',
     status: 'maintenance',
     powerDraw: { value: 1.0, unit: 'kW' },
-    dailyEmissions: { value: 23, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 23, unit: 'kgCO₂e' },
+    category: 'dry-lab'
   },
   {
     id: '12',
@@ -120,7 +133,8 @@ const mockEquipment: Equipment[] = [
     type: 'Ultra-Low Freezer',
     status: 'active',
     powerDraw: { value: 2.0, unit: 'kW' },
-    dailyEmissions: { value: 46, unit: 'kgCO₂e' }
+    dailyEmissions: { value: 46, unit: 'kgCO₂e' },
+    category: 'wet-lab'
   }
 ]
 

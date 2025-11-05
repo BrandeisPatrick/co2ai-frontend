@@ -1,5 +1,5 @@
 import { Equipment } from '../../types'
-import { Zap, Activity, MoreVertical } from 'lucide-react'
+import { Zap, Activity, MoreVertical, AlertCircle } from 'lucide-react'
 
 interface EquipmentCardProps {
   equipment: Equipment & { count?: number };
@@ -17,17 +17,25 @@ export default function EquipmentCard({ equipment, onViewDetails }: EquipmentCar
         return 'bg-red-500/10 text-red-500 border-red-500/20'
       case 'offline':
         return 'bg-gray-500/10 text-gray-500 border-gray-500/20'
+      case 'faulty':
+        return 'bg-red-500/10 text-red-500 border-red-500/20'
       default:
         return 'bg-gray-500/10 text-gray-500 border-gray-500/20'
     }
   }
+
+  const isFaulty = equipment.status === 'faulty'
 
   const formatStatus = (status: string) => {
     return status.charAt(0).toUpperCase() + status.slice(1)
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+    <div className={`bg-white dark:bg-gray-900 border rounded-xl overflow-hidden transition-colors ${
+      isFaulty
+        ? 'border-red-500 dark:border-red-600 shadow-lg shadow-red-500/10'
+        : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+    }`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-start justify-between mb-2">
@@ -86,6 +94,14 @@ export default function EquipmentCard({ equipment, onViewDetails }: EquipmentCar
             {equipment.dailyEmissions.value} {equipment.dailyEmissions.unit}
           </span>
         </div>
+
+        {/* Error Message for Faulty Equipment */}
+        {isFaulty && equipment.errorMessage && (
+          <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg flex gap-2">
+            <AlertCircle size={16} className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-red-700 dark:text-red-300">{equipment.errorMessage}</p>
+          </div>
+        )}
       </div>
 
       {/* View Details Button */}

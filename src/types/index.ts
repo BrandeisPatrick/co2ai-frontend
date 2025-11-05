@@ -59,7 +59,8 @@ export interface DashboardData {
 }
 
 // Equipment Inventory Types
-export type EquipmentStatus = 'active' | 'idle' | 'maintenance' | 'offline';
+export type EquipmentStatus = 'active' | 'idle' | 'maintenance' | 'offline' | 'faulty';
+export type EquipmentCategory = 'wet-lab' | 'dry-lab';
 
 export type EquipmentType =
   | 'Ultra-Low Freezer'
@@ -89,6 +90,8 @@ export interface Equipment {
     unit: string;
   };
   image?: string;
+  errorMessage?: string;
+  category?: EquipmentCategory;
 }
 
 // JSONBin Data Types

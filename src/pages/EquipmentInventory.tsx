@@ -1,7 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, Plus, RefreshCw } from 'lucide-react'
 import EquipmentCard from '../components/equipment/EquipmentCard'
 import AddEquipmentModal from '../components/equipment/AddEquipmentModal'
+import { ViewToggle, ViewMode } from '../components/equipment/ViewToggle'
+import { EquipmentTable } from '../components/equipment/EquipmentTable'
 import { Equipment } from '../types'
 import { useDataContext } from '../hooks/useDataContext'
 
@@ -16,6 +18,21 @@ export default function EquipmentInventory() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>('grid')
+
+  // Load view mode preference from localStorage on mount
+  useEffect(() => {
+    const savedViewMode = localStorage.getItem('equipment-view-mode') as ViewMode
+    if (savedViewMode === 'grid' || savedViewMode === 'list') {
+      setViewMode(savedViewMode)
+    }
+  }, [])
+
+  // Save view mode preference to localStorage on change
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode)
+    localStorage.setItem('equipment-view-mode', mode)
+  }
 
   // Group equipment by identical properties
   const groupEquipment = (items: Equipment[]): GroupedEquipment[] => {
@@ -143,6 +160,7 @@ export default function EquipmentInventory() {
             <p className="text-gray-600 dark:text-gray-400">Manage and monitor your wet lab equipment</p>
           </div>
           <div className="flex gap-2">
+            <ViewToggle currentView={viewMode} onViewChange={handleViewModeChange} />
             <button
               onClick={handleManualSync}
               disabled={isSyncing}
@@ -173,14 +191,14 @@ export default function EquipmentInventory() {
         />
       </div>
 
-      {/* Equipment Grid */}
+      {/* Equipment Display - Grid or List View */}
       {filteredEquipment.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400">
             {searchQuery ? 'No equipment found matching your search.' : 'No equipment available.'}
           </p>
         </div>
-      ) : (
+      ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEquipment.map((item) => (
             <EquipmentCard
@@ -190,6 +208,11 @@ export default function EquipmentInventory() {
             />
           ))}
         </div>
+      ) : (
+        <EquipmentTable
+          equipment={filteredEquipment}
+          onViewDetails={handleViewDetails}
+        />
       )}
     </div>
     </>
