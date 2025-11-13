@@ -1,7 +1,11 @@
 import React, { createContext, useEffect, useState, useCallback } from 'react';
 import { database, DataStore } from '../services/dataStore';
 import { apiService } from '../services/api';
-import { mockTimeSeriesDb } from '../services/mockTimeSeriesDb';
+import {
+  getDailyAggregates,
+  getWeeklyAggregates,
+  getMonthlyAggregates
+} from '../services/timestampedDataSource';
 import { Equipment } from '../types';
 
 interface DataContextType {
@@ -11,7 +15,6 @@ interface DataContextType {
   syncData: () => Promise<void>;
   getEquipmentById: (id: string) => Equipment | undefined;
   getEquipmentByType: (type: string) => Equipment[];
-  getEquipmentByStatus: (status: string) => Equipment[];
   addEquipment: (equipment: Equipment) => void;
   updateEquipment: (id: string, equipment: Partial<Equipment>) => void;
   removeEquipment: (id: string) => void;
@@ -49,18 +52,18 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({
       database.setLoading(true);
       database.setError(null);
 
-      // Fetch equipment data from API
-      const response = await apiService.getEquipment();
+      // Fetch all timestamped snapshots from API
+      const snapshots = await apiService.getSnapshots();
 
-      if (response && response.length > 0) {
-        database.setEquipment(response);
+      if (snapshots && snapshots.length > 0) {
+        // Store all snapshots and set current snapshot
+        database.setSnapshots(snapshots);
 
-        // Generate mock historical data from current equipment
-        mockTimeSeriesDb.generateHistory(response);
+        // Generate historical data aggregates from snapshots
         const historicalData = {
-          daily: mockTimeSeriesDb.getDailyAggregates(30),
-          weekly: mockTimeSeriesDb.getWeeklyAggregates(12),
-          monthly: mockTimeSeriesDb.getMonthlyAggregates(12),
+          daily: getDailyAggregates(30),
+          weekly: getWeeklyAggregates(12),
+          monthly: getMonthlyAggregates(12),
         };
         database.setHistoricalData(historicalData);
 
@@ -99,8 +102,6 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({
     syncData,
     getEquipmentById: (id: string) => database.getEquipmentById(id),
     getEquipmentByType: (type: string) => database.getEquipmentByType(type),
-    getEquipmentByStatus: (status: string) =>
-      database.getEquipmentByStatus(status),
     addEquipment: (equipment: Equipment) => database.addEquipment(equipment),
     updateEquipment: (id: string, equipment: Partial<Equipment>) =>
       database.updateEquipment(id, equipment),

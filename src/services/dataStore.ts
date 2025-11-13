@@ -1,12 +1,14 @@
-import { Equipment, JSONBinExperiment } from '../types';
+import { Equipment, JSONBinExperiment, TimestampedEquipmentSnapshot } from '../types';
 
 export interface HistoricalData {
   daily: Array<{ date: string; emissions: number; consumption: number }>;
-  weekly: Array<{ name: string; emissions: number; consumption: number }>;
+  weekly: Array<{ name: string; emissions: number; consumption: number; equipmentCount: number }>;
   monthly: Array<{ name: string; emissions: number; consumption: number }>;
 }
 
 export interface DataStore {
+  snapshots: TimestampedEquipmentSnapshot[];
+  currentSnapshot: TimestampedEquipmentSnapshot | null;
   equipment: Equipment[];
   rawExperiments: JSONBinExperiment[];
   historicalData: HistoricalData;
@@ -23,7 +25,6 @@ export interface DataStoreActions {
   removeEquipment: (id: string) => void;
   getEquipmentById: (id: string) => Equipment | undefined;
   getEquipmentByType: (type: string) => Equipment[];
-  getEquipmentByStatus: (status: string) => Equipment[];
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   setLastSyncTime: (time: number) => void;
@@ -32,6 +33,8 @@ export interface DataStoreActions {
 
 // Initial state
 export const initialDataStore: DataStore = {
+  snapshots: [],
+  currentSnapshot: null,
   equipment: [],
   rawExperiments: [],
   historicalData: {
@@ -72,10 +75,6 @@ export class InternalDatabase {
 
   getEquipmentByType(type: string): Equipment[] {
     return this.state.equipment.filter((eq) => eq.type === type);
-  }
-
-  getEquipmentByStatus(status: string): Equipment[] {
-    return this.state.equipment.filter((eq) => eq.status === status);
   }
 
   // Setters
@@ -162,6 +161,24 @@ export class InternalDatabase {
 
   getHistoricalData(): DataStore['historicalData'] {
     return { ...this.state.historicalData };
+  }
+
+  setSnapshots(snapshots: TimestampedEquipmentSnapshot[]): void {
+    this.state = {
+      ...this.state,
+      snapshots: [...snapshots],
+      currentSnapshot: snapshots.length > 0 ? snapshots[snapshots.length - 1] : null,
+      equipment: snapshots.length > 0 ? snapshots[snapshots.length - 1].equipment : [],
+    };
+    this.notify();
+  }
+
+  getSnapshots(): TimestampedEquipmentSnapshot[] {
+    return [...this.state.snapshots];
+  }
+
+  getCurrentSnapshot(): TimestampedEquipmentSnapshot | null {
+    return this.state.currentSnapshot ? { ...this.state.currentSnapshot } : null;
   }
 
   // Clear all data

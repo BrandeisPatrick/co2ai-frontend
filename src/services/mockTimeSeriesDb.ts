@@ -9,6 +9,7 @@ export interface TimeSeriesDataPoint {
 export interface TimeSeriesSnapshot {
   date: Date
   equipment: Equipment[]
+  equipmentCount: number
 }
 
 /**
@@ -44,6 +45,7 @@ export class MockTimeSeriesDatabase {
       this.snapshots.push({
         date: snapshotDate,
         equipment: historicalEquipment,
+        equipmentCount: equipment.length,
       })
     }
 
@@ -184,6 +186,7 @@ export class MockTimeSeriesDatabase {
         year: number
         totalEmissions: number
         totalConsumption: number
+        equipmentCount: number
       }
     } = {}
 
@@ -201,6 +204,7 @@ export class MockTimeSeriesDatabase {
           year,
           totalEmissions: 0,
           totalConsumption: 0,
+          equipmentCount: snapshot.equipmentCount,
         }
       }
 
@@ -223,6 +227,7 @@ export class MockTimeSeriesDatabase {
         name: `W${weekly.week}`,
         emissions: Math.round(weekly.totalEmissions),
         consumption: Math.round(weekly.totalConsumption),
+        equipmentCount: weekly.equipmentCount,
       }))
   }
 

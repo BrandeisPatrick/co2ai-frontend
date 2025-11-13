@@ -1,5 +1,5 @@
 import { useTheme } from '../contexts/ThemeContext'
-import { Sun, Moon } from 'lucide-react'
+import { Sun, Moon, Database } from 'lucide-react'
 
 export default function Settings() {
   const { theme, toggleTheme } = useTheme()
@@ -92,12 +92,20 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Additional Settings Placeholder */}
+      {/* Data Source Section */}
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">General</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Additional settings will appear here
-        </p>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Data Source</h2>
+        <div className="flex items-center gap-4 py-4">
+          <div className="p-3 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+            <Database size={24} className="text-amber-600 dark:text-amber-400" />
+          </div>
+          <div>
+            <h3 className="font-medium text-gray-900 dark:text-white">Using Mock Data</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              This application is currently running with simulated equipment data for demonstration purposes
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )

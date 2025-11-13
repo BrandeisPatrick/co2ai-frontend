@@ -11,14 +11,6 @@ export interface ActiveEquipment {
   changeType: 'increase' | 'decrease';
 }
 
-export interface EfficiencyScore {
-  score: number;
-  maxScore: number;
-  percentageChange: number;
-  changeType: 'increase' | 'decrease';
-  improvement: boolean;
-}
-
 export interface MonthlyConsumption {
   value: number;
   unit: string;
@@ -51,15 +43,12 @@ export interface Alert {
 export interface DashboardData {
   emissions: EmissionsData;
   activeEquipment: ActiveEquipment;
-  efficiency: EfficiencyScore;
   monthlyConsumption: MonthlyConsumption;
   monthlyTrend: MonthlyEmissionPoint[];
   topEquipment: EquipmentEmission[];
-  alerts: Alert[];
 }
 
 // Equipment Inventory Types
-export type EquipmentStatus = 'active' | 'idle' | 'maintenance' | 'offline' | 'faulty';
 export type EquipmentCategory = 'wet-lab' | 'dry-lab';
 
 export type EquipmentType =
@@ -80,7 +69,6 @@ export interface Equipment {
   equipmentId: string;
   manufacturer: string;
   type: EquipmentType;
-  status: EquipmentStatus;
   powerDraw: {
     value: number;
     unit: string;
@@ -90,8 +78,22 @@ export interface Equipment {
     unit: string;
   };
   image?: string;
-  errorMessage?: string;
   category?: EquipmentCategory;
+}
+
+// Timestamped Data Source Types
+export interface SnapshotMetadata {
+  totalEquipmentCount: number;
+  totalEmissions: number;
+  totalPowerDraw: number;
+  dataSource: 'mock' | 'api' | 'manual';
+}
+
+export interface TimestampedEquipmentSnapshot {
+  timestamp: string;
+  snapshotId: string;
+  equipment: Equipment[];
+  metadata: SnapshotMetadata;
 }
 
 // JSONBin Data Types

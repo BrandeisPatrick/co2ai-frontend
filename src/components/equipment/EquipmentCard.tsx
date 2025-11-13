@@ -1,41 +1,14 @@
 import { Equipment } from '../../types'
-import { Zap, Activity, MoreVertical, AlertCircle } from 'lucide-react'
+import { Zap, Activity, MoreVertical } from 'lucide-react'
 
 interface EquipmentCardProps {
   equipment: Equipment & { count?: number };
-  onViewDetails?: (id: string) => void;
 }
 
-export default function EquipmentCard({ equipment, onViewDetails }: EquipmentCardProps) {
-  const getStatusColor = (status: Equipment['status']) => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-500/10 text-green-500 border-green-500/20'
-      case 'idle':
-        return 'bg-orange-500/10 text-orange-500 border-orange-500/20'
-      case 'maintenance':
-        return 'bg-red-500/10 text-red-500 border-red-500/20'
-      case 'offline':
-        return 'bg-gray-500/10 text-gray-500 border-gray-500/20'
-      case 'faulty':
-        return 'bg-red-500/10 text-red-500 border-red-500/20'
-      default:
-        return 'bg-gray-500/10 text-gray-500 border-gray-500/20'
-    }
-  }
-
-  const isFaulty = equipment.status === 'faulty'
-
-  const formatStatus = (status: string) => {
-    return status.charAt(0).toUpperCase() + status.slice(1)
-  }
+export default function EquipmentCard({ equipment }: EquipmentCardProps) {
 
   return (
-    <div className={`bg-white dark:bg-gray-900 border rounded-xl overflow-hidden transition-colors ${
-      isFaulty
-        ? 'border-red-500 dark:border-red-600 shadow-lg shadow-red-500/10'
-        : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
-    }`}>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-xl overflow-hidden transition-colors">
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-start justify-between mb-2">
@@ -57,9 +30,6 @@ export default function EquipmentCard({ equipment, onViewDetails }: EquipmentCar
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs rounded-md border border-gray-300 dark:border-gray-700">
             {equipment.type}
-          </span>
-          <span className={`px-2.5 py-1 text-xs rounded-md border ${getStatusColor(equipment.status)}`}>
-            {formatStatus(equipment.status)}
           </span>
         </div>
       </div>
@@ -94,24 +64,6 @@ export default function EquipmentCard({ equipment, onViewDetails }: EquipmentCar
             {equipment.dailyEmissions.value} {equipment.dailyEmissions.unit}
           </span>
         </div>
-
-        {/* Error Message for Faulty Equipment */}
-        {isFaulty && equipment.errorMessage && (
-          <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg flex gap-2">
-            <AlertCircle size={16} className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-red-700 dark:text-red-300">{equipment.errorMessage}</p>
-          </div>
-        )}
-      </div>
-
-      {/* View Details Button */}
-      <div className="p-4 pt-0">
-        <button
-          onClick={() => onViewDetails?.(equipment.id)}
-          className="w-full py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-750 text-gray-900 dark:text-white text-sm font-medium rounded-lg transition-colors border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600"
-        >
-          View Details
-        </button>
       </div>
     </div>
   )

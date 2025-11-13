@@ -1,238 +1,81 @@
-import { DashboardData, Equipment, JSONBinExperiment } from '../types'
-
-// Mock equipment data - comprehensive lab equipment
-const mockEquipment: Equipment[] = [
-  {
-    id: '1',
-    name: 'ULT Freezer -80°C',
-    equipmentId: '#001',
-    manufacturer: 'Thermo Fisher Scientific',
-    type: 'Ultra-Low Freezer',
-    status: 'active',
-    powerDraw: { value: 5.2, unit: 'kW' },
-    dailyEmissions: { value: 120, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  },
-  {
-    id: '2',
-    name: 'CO2 Incubator Pro',
-    equipmentId: '#002',
-    manufacturer: 'Esco Technologies',
-    type: 'CO2 Incubator',
-    status: 'active',
-    powerDraw: { value: 2.8, unit: 'kW' },
-    dailyEmissions: { value: 65, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  },
-  {
-    id: '3',
-    name: 'Biosafety Cabinet Class II',
-    equipmentId: '#003',
-    manufacturer: 'Nuaire',
-    type: 'Biosafety Cabinet',
-    status: 'active',
-    powerDraw: { value: 1.5, unit: 'kW' },
-    dailyEmissions: { value: 35, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  },
-  {
-    id: '4',
-    name: 'Autoclave Sterilizer',
-    equipmentId: '#004',
-    manufacturer: 'MELAG',
-    type: 'Autoclave',
-    status: 'faulty',
-    powerDraw: { value: 3.2, unit: 'kW' },
-    dailyEmissions: { value: 75, unit: 'kgCO₂e' },
-    category: 'wet-lab',
-    errorMessage: 'Temperature sensor malfunction - calibration required'
-  },
-  {
-    id: '5',
-    name: 'Real-Time PCR System',
-    equipmentId: '#005',
-    manufacturer: 'Applied Biosystems',
-    type: 'PCR Machine',
-    status: 'active',
-    powerDraw: { value: 1.2, unit: 'kW' },
-    dailyEmissions: { value: 28, unit: 'kgCO₂e' },
-    category: 'dry-lab'
-  },
-  {
-    id: '6',
-    name: 'High-Speed Microcentrifuge',
-    equipmentId: '#006',
-    manufacturer: 'Eppendorf',
-    type: 'Centrifuge',
-    status: 'idle',
-    powerDraw: { value: 0.8, unit: 'kW' },
-    dailyEmissions: { value: 18, unit: 'kgCO₂e' },
-    category: 'dry-lab'
-  },
-  {
-    id: '7',
-    name: 'Inverted Fluorescence Microscope',
-    equipmentId: '#007',
-    manufacturer: 'Olympus',
-    type: 'Microscope',
-    status: 'active',
-    powerDraw: { value: 0.6, unit: 'kW' },
-    dailyEmissions: { value: 14, unit: 'kgCO₂e' },
-    category: 'dry-lab'
-  },
-  {
-    id: '8',
-    name: 'UV-Vis Spectrophotometer',
-    equipmentId: '#008',
-    manufacturer: 'Shimadzu',
-    type: 'Spectrophotometer',
-    status: 'faulty',
-    powerDraw: { value: 0.4, unit: 'kW' },
-    dailyEmissions: { value: 9, unit: 'kgCO₂e' },
-    category: 'dry-lab',
-    errorMessage: 'Light source not functioning properly - lamp replacement needed'
-  },
-  {
-    id: '9',
-    name: 'Ultra-Low Freezer -80°C (2nd Unit)',
-    equipmentId: '#009',
-    manufacturer: 'Thermo Fisher Scientific',
-    type: 'Ultra-Low Freezer',
-    status: 'active',
-    powerDraw: { value: 5.1, unit: 'kW' },
-    dailyEmissions: { value: 118, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  },
-  {
-    id: '10',
-    name: 'CO2 Incubator Standard',
-    equipmentId: '#010',
-    manufacturer: 'Panasonic',
-    type: 'CO2 Incubator',
-    status: 'active',
-    powerDraw: { value: 2.5, unit: 'kW' },
-    dailyEmissions: { value: 58, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  },
-  {
-    id: '11',
-    name: 'Benchtop Centrifuge',
-    equipmentId: '#011',
-    manufacturer: 'Heraeus',
-    type: 'Centrifuge',
-    status: 'maintenance',
-    powerDraw: { value: 1.0, unit: 'kW' },
-    dailyEmissions: { value: 23, unit: 'kgCO₂e' },
-    category: 'dry-lab'
-  },
-  {
-    id: '12',
-    name: 'Liquid Nitrogen Tank',
-    equipmentId: '#012',
-    manufacturer: 'Chart Industries',
-    type: 'Ultra-Low Freezer',
-    status: 'active',
-    powerDraw: { value: 2.0, unit: 'kW' },
-    dailyEmissions: { value: 46, unit: 'kgCO₂e' },
-    category: 'wet-lab'
-  }
-]
+import { DashboardData, Equipment, TimestampedEquipmentSnapshot } from '../types'
+import {
+  getLatestSnapshot,
+  getAllSnapshots,
+  getWeeklyAggregates,
+  getMonthlyAggregates
+} from './timestampedDataSource'
 
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-/**
- * Fetch data from secure backend API
- */
-async function fetchEquipmentData(): Promise<JSONBinExperiment[]> {
-  try {
-    const response = await fetch('/api/equipment', {
-      method: 'GET',
-    })
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`)
-    }
-
-    const result = await response.json()
-
-    if (!result.success) {
-      throw new Error('API returned error')
-    }
-
-    return result.data
-  } catch (error) {
-    console.error('Failed to fetch equipment data:', error)
-    // Return empty array on error
-    return []
-  }
-}
-
-/**
- * Transform JSONBin experiment data to Equipment format
- */
-function transformExperimentToEquipment(experiment: JSONBinExperiment): Equipment {
-  // Extract hardware name (use GPU or CPU)
-  const hardwareName = experiment.GPU_name || experiment.CPU_name
-
-  // Convert kWh to kW (assuming 24-hour operation)
-  const powerDrawKw = experiment['power_consumption(kWh)'] * 24
-
-  // Convert kg to kgCO₂e for daily emissions
-  const dailyEmissionsKg = experiment['CO2_emissions(kg)'] * 24
-
-  return {
-    id: experiment.id,
-    name: hardwareName.split('/')[0].trim(), // Get just the hardware name
-    equipmentId: `#${experiment.id.substring(0, 6)}`,
-    manufacturer: experiment.GPU_name ? 'NVIDIA' : 'Intel',
-    type: experiment.GPU_name ? 'GPU' : 'CPU',
-    status: 'active',
-    powerDraw: {
-      value: parseFloat(powerDrawKw.toFixed(4)),
-      unit: 'kW'
-    },
-    dailyEmissions: {
-      value: parseFloat(dailyEmissionsKg.toFixed(4)),
-      unit: 'kgCO₂e'
-    }
-  }
-}
-
 export const apiService = {
   /**
-   * Fetch dashboard data
-   * Replace this with actual API call:
-   * return fetch('/api/dashboard').then(res => res.json())
+   * Get all timestamped snapshots
+   */
+  async getSnapshots(): Promise<TimestampedEquipmentSnapshot[]> {
+    await delay(500) // Simulate network delay
+    return getAllSnapshots()
+  },
+
+  /**
+   * Get latest equipment snapshot
+   */
+  async getEquipment(): Promise<Equipment[]> {
+    await delay(500) // Simulate network delay
+    const snapshot = getLatestSnapshot()
+    return snapshot.equipment
+  },
+
+  /**
+   * Get dashboard data derived from latest snapshot
    */
   async getDashboardData(): Promise<DashboardData> {
     await delay(500) // Simulate network delay
 
-    // Get actual equipment
-    const equipment = await this.getEquipment()
-    const activeCount = equipment.filter(e => e.status === 'active').length
+    const snapshot = getLatestSnapshot()
+    const equipment = snapshot.equipment
 
     // Calculate Total Emissions (sum of daily emissions in kgCO₂e, convert to tCO₂e)
-    const totalEmissionsKg = equipment.reduce((sum, item) => {
-      return sum + item.dailyEmissions.value
-    }, 0)
+    const totalEmissionsKg = snapshot.metadata.totalEmissions
     const totalEmissionsTons = totalEmissionsKg / 1000
 
-    // Calculate Monthly Consumption (sum of power draw * 24 hours * 30 days, convert to MWh)
-    const monthlyConsumptionKWh = equipment.reduce((sum, item) => {
-      return sum + (item.powerDraw.value * 24 * 30)
-    }, 0)
-    const monthlyConsumptionMWh = monthlyConsumptionKWh / 1000
+    // Calculate Monthly Consumption from historical data
+    const monthlyData = getMonthlyAggregates(1)
+    const currentMonthEmissions = monthlyData.length > 0 ? monthlyData[0].emissions : totalEmissionsKg
+    const currentMonthConsumption = monthlyData.length > 0 ? monthlyData[0].consumption : 0
+    const monthlyConsumptionMWh = currentMonthConsumption / 1000
 
-    // Get current month for trend chart
-    const currentMonth = new Date().toLocaleString('en-US', { month: 'short' })
+    // Get previous month for comparison
+    const previousMonthData = getMonthlyAggregates(2)
+    const previousMonthEmissions = previousMonthData.length > 1 ? previousMonthData[0].emissions : currentMonthEmissions
+    const previousMonthConsumption = previousMonthData.length > 1 ? previousMonthData[0].consumption : currentMonthConsumption
+
+    // Calculate percentage changes
+    const emissionsChange =
+      previousMonthEmissions !== 0
+        ? ((currentMonthEmissions - previousMonthEmissions) / previousMonthEmissions) * 100
+        : 0
+    const consumptionChange =
+      previousMonthConsumption !== 0
+        ? ((currentMonthConsumption - previousMonthConsumption) / previousMonthConsumption) * 100
+        : 0
+
+    // Calculate equipment count change from weekly data
+    const weeklyData = getWeeklyAggregates(2)
+    const currentWeekEquipment = weeklyData.length > 0 ? weeklyData[weeklyData.length - 1].equipmentCount : equipment.length
+    const previousWeekEquipment = weeklyData.length > 1 ? weeklyData[weeklyData.length - 2].equipmentCount : equipment.length
+    const equipmentChange =
+      previousWeekEquipment !== 0
+        ? ((currentWeekEquipment - previousWeekEquipment) / previousWeekEquipment) * 100
+        : 0
 
     // Generate top equipment chart (sorted by daily emissions, top 5)
     const topEquipment = equipment
       .sort((a, b) => b.dailyEmissions.value - a.dailyEmissions.value)
       .slice(0, 5)
       .map((item, index) => {
-        const colors = ['#60A5FA', '#C084FC', '#34D399', '#FB923C', '#4ADE80']
+        const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6']
         return {
           name: item.name,
           emissions: item.dailyEmissions.value,
@@ -240,195 +83,48 @@ export const apiService = {
         }
       })
 
-    // Return dashboard data with real calculations
+    // Get monthly trend data
+    const monthlyTrend = getMonthlyAggregates(12)
+
     return {
       emissions: {
         total: parseFloat(totalEmissionsTons.toFixed(2)),
         unit: 'tCO₂e',
-        percentageChange: 0,
-        changeType: 'decrease'
+        percentageChange: Math.round(emissionsChange),
+        changeType: emissionsChange >= 0 ? 'increase' : 'decrease'
       },
       activeEquipment: {
-        count: activeCount,
-        percentageChange: 0,
-        changeType: 'increase'
-      },
-      efficiency: {
-        score: 0,
-        maxScore: 100,
-        percentageChange: 0,
-        changeType: 'increase',
-        improvement: false
+        count: equipment.length,
+        percentageChange: Math.round(equipmentChange),
+        changeType: equipmentChange >= 0 ? 'increase' : 'decrease'
       },
       monthlyConsumption: {
         value: parseFloat(monthlyConsumptionMWh.toFixed(2)),
         unit: 'MWh',
-        percentageChange: 0,
-        changeType: 'decrease'
+        percentageChange: Math.round(consumptionChange),
+        changeType: consumptionChange >= 0 ? 'increase' : 'decrease'
       },
-      monthlyTrend: [
-        { month: currentMonth, emissions: parseFloat(totalEmissionsTons.toFixed(2)) }
-      ],
-      topEquipment: topEquipment,
-      alerts: [] // No alerts - not yet implemented
+      monthlyTrend: monthlyTrend.map((month) => ({
+        month: month.name,
+        emissions: month.emissions
+      })),
+      topEquipment: topEquipment
     }
   },
 
   /**
-   * Fetch equipment inventory from JSONBin
-   * Fetches real experiment data and transforms it to equipment format
-   */
-  async getEquipment(): Promise<Equipment[]> {
-    try {
-      // Fetch data from secure backend API
-      const experiments = await fetchEquipmentData()
-
-      // Transform experiments to equipment
-      const equipment = experiments.map(transformExperimentToEquipment)
-
-      // Merge with any manually added equipment (from mockEquipment if they were added via addEquipment)
-      const manuallyAdded = mockEquipment.filter(e =>
-        !equipment.some(exp => exp.id === e.id)
-      )
-
-      return [...equipment, ...manuallyAdded]
-    } catch (error) {
-      console.error('Failed to get equipment:', error)
-      // Fallback to mock data on error
-      return mockEquipment
-    }
-  },
-
-  /**
-   * Add new equipment
-   * Replace this with actual API call:
-   * return fetch('/api/equipment', { method: 'POST', body: JSON.stringify(equipment) })
+   * Add new equipment to current snapshot (for demo purposes)
    */
   async addEquipment(equipment: Omit<Equipment, 'id'>): Promise<Equipment> {
     await delay(500) // Simulate network delay
 
     // Generate a new ID
-    const newId = (mockEquipment.length + 1).toString()
+    const newId = `eq_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const newEquipment: Equipment = {
       ...equipment,
       id: newId
     }
 
-    // Add to mock data
-    mockEquipment.push(newEquipment)
-
     return newEquipment
-  },
-
-  /**
-   * Fetch analytics data for charts
-   */
-  async getAnalyticsData(): Promise<{
-    week: Array<{ name: string; emissions: number; consumption: number }>
-    month: Array<{ name: string; emissions: number; consumption: number }>
-    year: Array<{ name: string; emissions: number; consumption: number }>
-  }> {
-    try {
-      const equipment = await this.getEquipment()
-
-      if (equipment.length === 0) {
-        throw new Error('No equipment data available')
-      }
-
-      // Calculate average daily values from equipment
-      const avgDailyEmissions =
-        equipment.reduce((sum, e) => sum + e.dailyEmissions.value, 0) /
-        equipment.length
-      const avgDailyConsumption =
-        equipment.reduce((sum, e) => sum + e.powerDraw.value * 24, 0) /
-        equipment.length // kW * 24 hours = kWh
-
-      // Generate week data (7 days with variation)
-      const weekData = Array.from({ length: 7 }, (_, i) => {
-        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        const variation = 0.8 + Math.random() * 0.4 // 0.8 to 1.2 variation
-        return {
-          name: days[i],
-          emissions: parseFloat((avgDailyEmissions * variation).toFixed(1)),
-          consumption: parseFloat(
-            (avgDailyConsumption * variation).toFixed(0)
-          )
-        }
-      })
-
-      // Generate month data (4 weeks)
-      const monthData = Array.from({ length: 4 }, (_, i) => {
-        const variation = 0.85 + Math.random() * 0.3
-        const weekEmissions = weekData.reduce((sum, d) => sum + d.emissions, 0)
-        const weekConsumption = weekData.reduce(
-          (sum, d) => sum + d.consumption,
-          0
-        )
-        return {
-          name: `Week ${i + 1}`,
-          emissions: parseFloat((weekEmissions * variation).toFixed(0)),
-          consumption: parseFloat((weekConsumption * variation).toFixed(0))
-        }
-      })
-
-      // Generate year data (12 months)
-      const yearData = Array.from({ length: 12 }, (_, i) => {
-        const months = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec'
-        ]
-        const variation = 0.9 + Math.random() * 0.2
-        const monthEmissions = monthData.reduce((sum, d) => sum + d.emissions, 0)
-        const monthConsumption = monthData.reduce(
-          (sum, d) => sum + d.consumption,
-          0
-        )
-        return {
-          name: months[i],
-          emissions: parseFloat((monthEmissions * variation).toFixed(0)),
-          consumption: parseFloat((monthConsumption * variation).toFixed(0))
-        }
-      })
-
-      return { week: weekData, month: monthData, year: yearData }
-    } catch (error) {
-      console.error('Failed to fetch analytics data:', error)
-      // Return empty data structure on error
-      return {
-        week: [],
-        month: [],
-        year: []
-      }
-    }
-  },
-
-  /**
-   * Example of how to structure a real API call:
-   */
-  // async getDashboardData(): Promise<DashboardData> {
-  //   const response = await fetch('/api/dashboard', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       // Add authentication headers if needed
-  //       // 'Authorization': `Bearer ${token}`
-  //     }
-  //   })
-  //
-  //   if (!response.ok) {
-  //     throw new Error('Failed to fetch dashboard data')
-  //   }
-  //
-  //   return response.json()
-  // }
+  }
 }

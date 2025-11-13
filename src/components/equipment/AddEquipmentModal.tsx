@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
-import { Equipment, EquipmentType, EquipmentStatus } from '../../types'
+import { Equipment, EquipmentType } from '../../types'
 
 interface AddEquipmentModalProps {
   isOpen: boolean;
@@ -21,15 +21,12 @@ const equipmentTypes: EquipmentType[] = [
   'CPU'
 ]
 
-const equipmentStatuses: EquipmentStatus[] = ['active', 'idle', 'maintenance', 'offline']
-
 export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEquipmentModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     equipmentId: '',
     manufacturer: '',
     type: '' as EquipmentType,
-    status: 'active' as EquipmentStatus,
     powerDrawValue: '',
     powerDrawUnit: 'kW',
     dailyEmissionsValue: '',
@@ -81,7 +78,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
       equipmentId: formData.equipmentId.trim(),
       manufacturer: formData.manufacturer.trim(),
       type: formData.type,
-      status: formData.status,
       powerDraw: {
         value: parseFloat(formData.powerDrawValue),
         unit: formData.powerDrawUnit
@@ -102,7 +98,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
       equipmentId: '',
       manufacturer: '',
       type: '' as EquipmentType,
-      status: 'active',
       powerDrawValue: '',
       powerDrawUnit: 'kW',
       dailyEmissionsValue: '',
@@ -219,22 +214,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Status <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData.status}
-                onChange={(e) => handleChange('status', e.target.value)}
-                className="w-full px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-emerald-600 dark:focus:border-blue-600 transition-colors"
-              >
-                {equipmentStatuses.map((status) => (
-                  <option key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
 
           {/* Performance Metrics */}

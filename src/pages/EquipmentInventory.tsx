@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Search, Plus, RefreshCw } from 'lucide-react'
+import { Search, Plus } from 'lucide-react'
 import EquipmentCard from '../components/equipment/EquipmentCard'
 import AddEquipmentModal from '../components/equipment/AddEquipmentModal'
 import { ViewToggle, ViewMode } from '../components/equipment/ViewToggle'
@@ -14,10 +14,9 @@ interface GroupedEquipment extends Equipment {
 }
 
 export default function EquipmentInventory() {
-  const { store, isLoading, error, syncData, addEquipment } = useDataContext()
+  const { store, isLoading, error, addEquipment } = useDataContext()
   const [searchQuery, setSearchQuery] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isSyncing, setIsSyncing] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
 
   // Load view mode preference from localStorage on mount
@@ -44,7 +43,6 @@ export default function EquipmentInventory() {
         name: item.name,
         manufacturer: item.manufacturer,
         type: item.type,
-        status: item.status,
         powerDraw: item.powerDraw,
         dailyEmissions: item.dailyEmissions
       })
@@ -84,11 +82,6 @@ export default function EquipmentInventory() {
     return groupEquipment(filtered)
   }, [searchQuery, store.equipment])
 
-  const handleViewDetails = (id: string) => {
-    console.log('View details for equipment:', id)
-    // TODO: Navigate to equipment details page or open modal
-  }
-
   const handleAddEquipment = () => {
     setIsModalOpen(true)
   }
@@ -108,15 +101,6 @@ export default function EquipmentInventory() {
     }
   }
 
-  const handleManualSync = async () => {
-    setIsSyncing(true)
-    try {
-      await syncData()
-    } finally {
-      setIsSyncing(false)
-    }
-  }
-
   if (isLoading && store.equipment.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -132,13 +116,7 @@ export default function EquipmentInventory() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-red-600 dark:text-red-500 mb-4">{error}</p>
-          <button
-            onClick={handleManualSync}
-            className="px-4 py-2 bg-emerald-600 dark:bg-blue-600 hover:bg-emerald-700 dark:hover:bg-blue-700 text-white rounded-lg transition-colors"
-          >
-            Retry
-          </button>
+          <p className="text-red-600 dark:text-red-500">{error}</p>
         </div>
       </div>
     )
@@ -161,14 +139,6 @@ export default function EquipmentInventory() {
           </div>
           <div className="flex gap-2">
             <ViewToggle currentView={viewMode} onViewChange={handleViewModeChange} />
-            <button
-              onClick={handleManualSync}
-              disabled={isSyncing}
-              className="flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 text-gray-900 dark:text-white text-sm font-medium rounded-lg transition-colors"
-            >
-              <RefreshCw size={18} className={isSyncing ? 'animate-spin' : ''} />
-              {isSyncing ? 'Syncing...' : 'Sync'}
-            </button>
             <button
               onClick={handleAddEquipment}
               className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 dark:bg-blue-600 hover:bg-emerald-700 dark:hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
@@ -204,14 +174,12 @@ export default function EquipmentInventory() {
             <EquipmentCard
               key={item.id}
               equipment={item}
-              onViewDetails={handleViewDetails}
             />
           ))}
         </div>
       ) : (
         <EquipmentTable
           equipment={filteredEquipment}
-          onViewDetails={handleViewDetails}
         />
       )}
     </div>
