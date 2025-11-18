@@ -5,13 +5,11 @@
 export interface DailyDataPoint {
   date: string
   emissions: number
-  consumption: number
 }
 
 export interface MonthlyDataPoint {
   name: string
   emissions: number
-  consumption: number
 }
 
 /**
@@ -66,25 +64,10 @@ export const getLastNDays = (dailyData: DailyDataPoint[], days: number): DailyDa
 }
 
 /**
- * Sum consumption values from daily data
- */
-export const sumConsumption = (dailyData: DailyDataPoint[]): number => {
-  return dailyData.reduce((sum, day) => sum + day.consumption, 0)
-}
-
-/**
  * Sum emissions values from daily data
  */
 export const sumEmissions = (dailyData: DailyDataPoint[]): number => {
   return dailyData.reduce((sum, day) => sum + day.emissions, 0)
-}
-
-/**
- * Calculate average daily consumption
- */
-export const avgDailyConsumption = (dailyData: DailyDataPoint[]): number => {
-  if (dailyData.length === 0) return 0
-  return sumConsumption(dailyData) / dailyData.length
 }
 
 /**
@@ -107,22 +90,6 @@ export const kWhToMWh = (kWh: number): number => {
  */
 export const kgToTons = (kg: number): number => {
   return kg / 1000
-}
-
-/**
- * Format consumption value with appropriate unit
- */
-export const formatConsumption = (kWh: number): { value: number; unit: string } => {
-  if (kWh >= 1000) {
-    return {
-      value: parseFloat(kWhToMWh(kWh).toFixed(2)),
-      unit: 'MWh'
-    }
-  }
-  return {
-    value: parseFloat(kWh.toFixed(2)),
-    unit: 'kWh'
-  }
 }
 
 /**

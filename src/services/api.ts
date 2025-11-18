@@ -40,25 +40,18 @@ export const apiService = {
     const totalEmissionsKg = snapshot.metadata.totalEmissions
     const totalEmissionsTons = totalEmissionsKg / 1000
 
-    // Calculate Monthly Consumption from historical data
+    // Get monthly emissions from historical data
     const monthlyData = getMonthlyAggregates(1)
     const currentMonthEmissions = monthlyData.length > 0 ? monthlyData[0].emissions : totalEmissionsKg
-    const currentMonthConsumption = monthlyData.length > 0 ? monthlyData[0].consumption : 0
-    const monthlyConsumptionMWh = currentMonthConsumption / 1000
 
     // Get previous month for comparison
     const previousMonthData = getMonthlyAggregates(2)
     const previousMonthEmissions = previousMonthData.length > 1 ? previousMonthData[0].emissions : currentMonthEmissions
-    const previousMonthConsumption = previousMonthData.length > 1 ? previousMonthData[0].consumption : currentMonthConsumption
 
-    // Calculate percentage changes
+    // Calculate emissions percentage change
     const emissionsChange =
       previousMonthEmissions !== 0
         ? ((currentMonthEmissions - previousMonthEmissions) / previousMonthEmissions) * 100
-        : 0
-    const consumptionChange =
-      previousMonthConsumption !== 0
-        ? ((currentMonthConsumption - previousMonthConsumption) / previousMonthConsumption) * 100
         : 0
 
     // Calculate equipment count change from weekly data
@@ -97,12 +90,6 @@ export const apiService = {
         count: equipment.length,
         percentageChange: Math.round(equipmentChange),
         changeType: equipmentChange >= 0 ? 'increase' : 'decrease'
-      },
-      monthlyConsumption: {
-        value: parseFloat(monthlyConsumptionMWh.toFixed(2)),
-        unit: 'MWh',
-        percentageChange: Math.round(consumptionChange),
-        changeType: consumptionChange >= 0 ? 'increase' : 'decrease'
       },
       monthlyTrend: monthlyTrend.map((month) => ({
         month: month.name,

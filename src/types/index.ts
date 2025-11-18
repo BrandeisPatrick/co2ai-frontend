@@ -11,13 +11,6 @@ export interface ActiveEquipment {
   changeType: 'increase' | 'decrease';
 }
 
-export interface MonthlyConsumption {
-  value: number;
-  unit: string;
-  percentageChange: number;
-  changeType: 'increase' | 'decrease';
-}
-
 export interface MonthlyEmissionPoint {
   month: string;
   emissions: number;

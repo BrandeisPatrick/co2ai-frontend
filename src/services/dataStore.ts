@@ -1,9 +1,9 @@
 import { Equipment, JSONBinExperiment, TimestampedEquipmentSnapshot } from '../types';
 
 export interface HistoricalData {
-  daily: Array<{ date: string; emissions: number; consumption: number }>;
-  weekly: Array<{ name: string; emissions: number; consumption: number; equipmentCount: number }>;
-  monthly: Array<{ name: string; emissions: number; consumption: number }>;
+  daily: Array<{ date: string; emissions: number }>;
+  weekly: Array<{ name: string; emissions: number; equipmentCount: number }>;
+  monthly: Array<{ name: string; emissions: number }>;
 }
 
 export interface DataStore {
