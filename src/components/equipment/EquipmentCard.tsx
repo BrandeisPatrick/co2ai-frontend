@@ -1,5 +1,5 @@
 import { Equipment } from '../../types'
-import { Zap, Activity, MoreVertical } from 'lucide-react'
+import { Activity, MoreVertical } from 'lucide-react'
 
 interface EquipmentCardProps {
   equipment: Equipment & { count?: number };
@@ -46,15 +46,6 @@ export default function EquipmentCard({ equipment }: EquipmentCardProps) {
 
       {/* Metrics */}
       <div className="p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <Zap size={16} />
-            <span className="text-sm">Power Draw</span>
-          </div>
-          <span className="text-sm font-medium text-gray-900 dark:text-white">
-            {equipment.powerDraw.value} {equipment.powerDraw.unit}
-          </span>
-        </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <Activity size={16} />

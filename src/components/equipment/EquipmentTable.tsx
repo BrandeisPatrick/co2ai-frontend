@@ -35,18 +35,6 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
       cell: (info) => <span className="text-gray-700 dark:text-gray-300">{info.getValue() as string}</span>,
     },
     {
-      accessorKey: 'powerDraw',
-      header: 'Power Draw',
-      cell: (info) => {
-        const powerDraw = info.getValue() as { value: number; unit: string }
-        return (
-          <span className="text-gray-700 dark:text-gray-300">
-            {powerDraw.value} {powerDraw.unit}
-          </span>
-        )
-      },
-    },
-    {
       accessorKey: 'dailyEmissions',
       header: 'Daily Emissions',
       cell: (info) => {

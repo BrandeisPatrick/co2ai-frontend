@@ -80,10 +80,6 @@ export class MockTimeSeriesDatabase {
 
     return {
       ...equipment,
-      powerDraw: {
-        ...equipment.powerDraw,
-        value: Number((equipment.powerDraw.value * combinedFactor).toFixed(2)),
-      },
       dailyEmissions: {
         ...equipment.dailyEmissions,
         value: Number((equipment.dailyEmissions.value * combinedFactor).toFixed(2)),
@@ -131,7 +127,6 @@ export class MockTimeSeriesDatabase {
       [key: string]: {
         date: Date
         totalEmissions: number
-        totalConsumption: number
       }
     } = {}
 
@@ -147,7 +142,6 @@ export class MockTimeSeriesDatabase {
         dailyData[dateKey] = {
           date,
           totalEmissions: 0,
-          totalConsumption: 0,
         }
       }
 
@@ -155,8 +149,6 @@ export class MockTimeSeriesDatabase {
       snapshot.equipment.forEach((eq) => {
         // dailyEmissions.value is already a daily total
         dailyData[dateKey].totalEmissions += eq.dailyEmissions.value
-        // powerDraw.value is hourly average, multiply by 24 to get daily consumption
-        dailyData[dateKey].totalConsumption += eq.powerDraw.value * 24
       })
     })
 
@@ -166,7 +158,6 @@ export class MockTimeSeriesDatabase {
       .map((daily) => ({
         date: daily.date.toISOString().split('T')[0], // Return date as string (YYYY-MM-DD)
         emissions: Math.round(daily.totalEmissions),
-        consumption: Math.round(daily.totalConsumption),
       }))
   }
 
@@ -185,7 +176,6 @@ export class MockTimeSeriesDatabase {
         week: number
         year: number
         totalEmissions: number
-        totalConsumption: number
         equipmentCount: number
       }
     } = {}
@@ -203,7 +193,6 @@ export class MockTimeSeriesDatabase {
           week,
           year,
           totalEmissions: 0,
-          totalConsumption: 0,
           equipmentCount: snapshot.equipmentCount,
         }
       }
@@ -211,7 +200,6 @@ export class MockTimeSeriesDatabase {
       // Sum all equipment values
       snapshot.equipment.forEach((eq) => {
         weeklyData[key].totalEmissions += eq.dailyEmissions.value
-        weeklyData[key].totalConsumption += eq.powerDraw.value * 24
       })
     })
 
@@ -226,7 +214,6 @@ export class MockTimeSeriesDatabase {
       .map((weekly) => ({
         name: `W${weekly.week}`,
         emissions: Math.round(weekly.totalEmissions),
-        consumption: Math.round(weekly.totalConsumption),
         equipmentCount: weekly.equipmentCount,
       }))
   }
@@ -248,7 +235,6 @@ export class MockTimeSeriesDatabase {
         monthNumber: number
         year: number
         totalEmissions: number
-        totalConsumption: number
       }
     } = {}
 
@@ -268,14 +254,12 @@ export class MockTimeSeriesDatabase {
           monthNumber: month,
           year,
           totalEmissions: 0,
-          totalConsumption: 0,
         }
       }
 
       // Sum all equipment values for each day
       snapshot.equipment.forEach((eq) => {
         monthlyData[key].totalEmissions += eq.dailyEmissions.value
-        monthlyData[key].totalConsumption += eq.powerDraw.value * 24
       })
     })
 
@@ -288,7 +272,6 @@ export class MockTimeSeriesDatabase {
       .map((monthly) => ({
         name: monthly.month,
         emissions: Math.round(monthly.totalEmissions),
-        consumption: Math.round(monthly.totalConsumption),
       }))
   }
 

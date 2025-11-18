@@ -27,8 +27,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
     equipmentId: '',
     manufacturer: '',
     type: '' as EquipmentType,
-    powerDrawValue: '',
-    powerDrawUnit: 'kW',
     dailyEmissionsValue: '',
     dailyEmissionsUnit: 'kgCO₂e'
   })
@@ -55,9 +53,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
     if (!formData.type) {
       newErrors.type = 'Equipment type is required'
     }
-    if (!formData.powerDrawValue || parseFloat(formData.powerDrawValue) <= 0) {
-      newErrors.powerDrawValue = 'Valid power draw is required'
-    }
     if (!formData.dailyEmissionsValue || parseFloat(formData.dailyEmissionsValue) <= 0) {
       newErrors.dailyEmissionsValue = 'Valid daily emissions is required'
     }
@@ -78,10 +73,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
       equipmentId: formData.equipmentId.trim(),
       manufacturer: formData.manufacturer.trim(),
       type: formData.type,
-      powerDraw: {
-        value: parseFloat(formData.powerDrawValue),
-        unit: formData.powerDrawUnit
-      },
       dailyEmissions: {
         value: parseFloat(formData.dailyEmissionsValue),
         unit: formData.dailyEmissionsUnit
@@ -98,8 +89,6 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
       equipmentId: '',
       manufacturer: '',
       type: '' as EquipmentType,
-      powerDrawValue: '',
-      powerDrawUnit: 'kW',
       dailyEmissionsValue: '',
       dailyEmissionsUnit: 'kgCO₂e'
     })
@@ -222,37 +211,7 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
               Performance Metrics
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Power Draw <span className="text-red-500">*</span>
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    value={formData.powerDrawValue}
-                    onChange={(e) => handleChange('powerDrawValue', e.target.value)}
-                    className={`flex-1 px-4 py-2.5 bg-white dark:bg-gray-800 border ${
-                      errors.powerDrawValue ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
-                    } rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-emerald-600 dark:focus:border-blue-600 transition-colors`}
-                    placeholder="0.0"
-                  />
-                  <select
-                    value={formData.powerDrawUnit}
-                    onChange={(e) => handleChange('powerDrawUnit', e.target.value)}
-                    className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-emerald-600 dark:focus:border-blue-600 transition-colors"
-                  >
-                    <option value="kW">kW</option>
-                    <option value="W">W</option>
-                  </select>
-                </div>
-                {errors.powerDrawValue && (
-                  <p className="mt-1 text-xs text-red-500">{errors.powerDrawValue}</p>
-                )}
-              </div>
-
+            <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Daily Emissions <span className="text-red-500">*</span>

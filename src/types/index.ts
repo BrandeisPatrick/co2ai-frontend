@@ -43,7 +43,6 @@ export interface Alert {
 export interface DashboardData {
   emissions: EmissionsData;
   activeEquipment: ActiveEquipment;
-  monthlyConsumption: MonthlyConsumption;
   monthlyTrend: MonthlyEmissionPoint[];
   topEquipment: EquipmentEmission[];
 }
@@ -69,10 +68,6 @@ export interface Equipment {
   equipmentId: string;
   manufacturer: string;
   type: EquipmentType;
-  powerDraw: {
-    value: number;
-    unit: string;
-  };
   dailyEmissions: {
     value: number;
     unit: string;
@@ -85,7 +80,6 @@ export interface Equipment {
 export interface SnapshotMetadata {
   totalEquipmentCount: number;
   totalEmissions: number;
-  totalPowerDraw: number;
   dataSource: 'mock' | 'api' | 'manual';
 }
 

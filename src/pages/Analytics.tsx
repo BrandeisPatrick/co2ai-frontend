@@ -1,14 +1,14 @@
 import { useState, useMemo } from 'react'
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { useDataContext } from '../hooks/useDataContext'
-import { formatConsumption, formatEmissions } from '../utils/timeSeriesHelpers'
+import { formatEmissions } from '../utils/timeSeriesHelpers'
 
 type TimeRange = 'week' | 'month' | 'year'
 
 interface AnalyticsDataSet {
-  week: Array<{ name: string; emissions: number; consumption: number }>
-  month: Array<{ name: string; emissions: number; consumption: number }>
-  year: Array<{ name: string; emissions: number; consumption: number }>
+  week: Array<{ name: string; emissions: number }>
+  month: Array<{ name: string; emissions: number }>
+  year: Array<{ name: string; emissions: number }>
 }
 
 function getChartData(timeRange: TimeRange, data: AnalyticsDataSet) {
@@ -50,7 +50,6 @@ export default function Analytics() {
         return {
           name: date.toLocaleDateString('en-US', { weekday: 'short' }),
           emissions: day.emissions,
-          consumption: day.consumption,
         }
       })
 
@@ -62,7 +61,6 @@ export default function Analytics() {
         return {
           name: `Day ${date.getDate()}`,
           emissions: day.emissions,
-          consumption: day.consumption,
         }
       })
 
@@ -70,7 +68,6 @@ export default function Analytics() {
     const yearData = store.historicalData.monthly.map((month) => ({
       name: month.name,
       emissions: month.emissions,
-      consumption: month.consumption,
     }))
 
     return {
@@ -133,14 +130,10 @@ export default function Analytics() {
   // Calculate statistics
   const totalEmissions = data.reduce((sum, item) => sum + item.emissions, 0)
   const avgEmissions = totalEmissions / data.length
-  const totalConsumption = data.reduce((sum, item) => sum + item.consumption, 0)
-  const avgConsumption = totalConsumption / data.length
 
   // Format values with appropriate units
   const totalEmissionsFormatted = formatEmissions(totalEmissions)
   const avgEmissionsFormatted = formatEmissions(avgEmissions)
-  const totalConsumptionFormatted = formatConsumption(totalConsumption)
-  const avgConsumptionFormatted = formatConsumption(avgConsumption)
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -168,7 +161,7 @@ export default function Analytics() {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Emissions</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalEmissionsFormatted.value}</p>
@@ -179,25 +172,15 @@ export default function Analytics() {
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgEmissionsFormatted.value}</p>
           <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgEmissionsFormatted.unit}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Consumption</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalConsumptionFormatted.value}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{totalConsumptionFormatted.unit}</p>
-        </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Avg Consumption</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgConsumptionFormatted.value}</p>
-          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgConsumptionFormatted.unit}</p>
-        </div>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="space-y-6">
         {/* Total Emissions Chart */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Total Emissions</h2>
-            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">kgCO₂e</span>
+            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{totalEmissionsFormatted.unit}</span>
           </div>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart
@@ -238,50 +221,6 @@ export default function Analytics() {
                 isAnimationActive={true}
               />
             </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Total Energy Consumption Chart */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Total Energy Consumption</h2>
-            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">kWh</span>
-          </div>
-          <ResponsiveContainer width="100%" height={350}>
-            <BarChart
-              data={data}
-              margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
-              <XAxis
-                dataKey={xAxisKey}
-                stroke="#9ca3af"
-                className="dark:stroke-gray-500"
-                style={{ fontSize: '12px' }}
-              />
-              <YAxis
-                stroke="#9ca3af"
-                className="dark:stroke-gray-500"
-                style={{ fontSize: '12px' }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend
-                wrapperStyle={{ paddingTop: '20px' }}
-              />
-              <Bar
-                dataKey="consumption"
-                fill="#10b981"
-                radius={[8, 8, 0, 0]}
-                isAnimationActive={true}
-              >
-                {data.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={index % 2 === 0 ? '#10b981' : '#059669'}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>

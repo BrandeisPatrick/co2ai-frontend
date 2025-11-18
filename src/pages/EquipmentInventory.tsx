@@ -17,7 +17,7 @@ export default function EquipmentInventory() {
   const { store, isLoading, error, addEquipment } = useDataContext()
   const [searchQuery, setSearchQuery] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
+  const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   // Load view mode preference from localStorage on mount
   useEffect(() => {
@@ -43,7 +43,6 @@ export default function EquipmentInventory() {
         name: item.name,
         manufacturer: item.manufacturer,
         type: item.type,
-        powerDraw: item.powerDraw,
         dailyEmissions: item.dailyEmissions
       })
 

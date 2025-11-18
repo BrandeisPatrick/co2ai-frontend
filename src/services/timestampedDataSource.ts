@@ -10,7 +10,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#001',
     manufacturer: 'Thermo Fisher Scientific',
     type: 'Ultra-Low Freezer',
-    powerDraw: { value: 5.2, unit: 'kW' },
     dailyEmissions: { value: 120, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -20,7 +19,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#002',
     manufacturer: 'Esco Technologies',
     type: 'CO2 Incubator',
-    powerDraw: { value: 2.8, unit: 'kW' },
     dailyEmissions: { value: 65, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -30,7 +28,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#003',
     manufacturer: 'Nuaire',
     type: 'Biosafety Cabinet',
-    powerDraw: { value: 1.5, unit: 'kW' },
     dailyEmissions: { value: 35, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -40,7 +37,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#004',
     manufacturer: 'MELAG',
     type: 'Autoclave',
-    powerDraw: { value: 3.2, unit: 'kW' },
     dailyEmissions: { value: 75, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -50,7 +46,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#005',
     manufacturer: 'Applied Biosystems',
     type: 'PCR Machine',
-    powerDraw: { value: 1.2, unit: 'kW' },
     dailyEmissions: { value: 28, unit: 'kgCO₂e' },
     category: 'dry-lab'
   },
@@ -60,7 +55,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#006',
     manufacturer: 'Eppendorf',
     type: 'Centrifuge',
-    powerDraw: { value: 0.8, unit: 'kW' },
     dailyEmissions: { value: 18, unit: 'kgCO₂e' },
     category: 'dry-lab'
   },
@@ -70,7 +64,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#007',
     manufacturer: 'Olympus',
     type: 'Microscope',
-    powerDraw: { value: 0.6, unit: 'kW' },
     dailyEmissions: { value: 14, unit: 'kgCO₂e' },
     category: 'dry-lab'
   },
@@ -80,7 +73,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#008',
     manufacturer: 'Shimadzu',
     type: 'Spectrophotometer',
-    powerDraw: { value: 0.4, unit: 'kW' },
     dailyEmissions: { value: 9, unit: 'kgCO₂e' },
     category: 'dry-lab'
   },
@@ -90,7 +82,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#009',
     manufacturer: 'Thermo Fisher Scientific',
     type: 'Ultra-Low Freezer',
-    powerDraw: { value: 5.1, unit: 'kW' },
     dailyEmissions: { value: 118, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -100,7 +91,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#010',
     manufacturer: 'Panasonic',
     type: 'CO2 Incubator',
-    powerDraw: { value: 2.5, unit: 'kW' },
     dailyEmissions: { value: 58, unit: 'kgCO₂e' },
     category: 'wet-lab'
   },
@@ -110,7 +100,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#011',
     manufacturer: 'Heraeus',
     type: 'Centrifuge',
-    powerDraw: { value: 1.0, unit: 'kW' },
     dailyEmissions: { value: 23, unit: 'kgCO₂e' },
     category: 'dry-lab'
   },
@@ -120,7 +109,6 @@ const baseEquipment: Equipment[] = [
     equipmentId: '#012',
     manufacturer: 'Chart Industries',
     type: 'Ultra-Low Freezer',
-    powerDraw: { value: 2.0, unit: 'kW' },
     dailyEmissions: { value: 46, unit: 'kgCO₂e' },
     category: 'wet-lab'
   }
@@ -160,10 +148,6 @@ export function generateTimestampedSnapshots(): TimestampedEquipmentSnapshot[] {
 
       return {
         ...eq,
-        powerDraw: {
-          ...eq.powerDraw,
-          value: Number((eq.powerDraw.value * combinedFactor).toFixed(2))
-        },
         dailyEmissions: {
           ...eq.dailyEmissions,
           value: Number((eq.dailyEmissions.value * combinedFactor).toFixed(2))
@@ -175,11 +159,6 @@ export function generateTimestampedSnapshots(): TimestampedEquipmentSnapshot[] {
     const totalEmissions = Math.round(
       snapshotEquipment.reduce((sum, eq) => sum + eq.dailyEmissions.value, 0)
     )
-    const totalPowerDraw = Number(
-      snapshotEquipment
-        .reduce((sum, eq) => sum + eq.powerDraw.value, 0)
-        .toFixed(2)
-    )
 
     snapshots.push({
       timestamp,
@@ -188,7 +167,6 @@ export function generateTimestampedSnapshots(): TimestampedEquipmentSnapshot[] {
       metadata: {
         totalEquipmentCount: snapshotEquipment.length,
         totalEmissions,
-        totalPowerDraw,
         dataSource: 'mock'
       }
     })
@@ -240,8 +218,7 @@ export function getDailyAggregates(days: number = 30) {
     .filter((snapshot) => new Date(snapshot.timestamp) >= startDate)
     .map((snapshot) => ({
       date: snapshot.timestamp.split('T')[0],
-      emissions: snapshot.metadata.totalEmissions,
-      consumption: Math.round(snapshot.metadata.totalPowerDraw * 24)
+      emissions: snapshot.metadata.totalEmissions
     }))
 }
 
@@ -260,7 +237,6 @@ export function getWeeklyAggregates(weeks: number = 12) {
       week: number
       year: number
       totalEmissions: number
-      totalConsumption: number
       equipmentCount: number
     }
   } = {}
@@ -278,13 +254,11 @@ export function getWeeklyAggregates(weeks: number = 12) {
           week,
           year,
           totalEmissions: 0,
-          totalConsumption: 0,
           equipmentCount: snapshot.metadata.totalEquipmentCount
         }
       }
 
       weeklyData[key].totalEmissions += snapshot.metadata.totalEmissions
-      weeklyData[key].totalConsumption += snapshot.metadata.totalPowerDraw * 24
     })
 
   return Object.values(weeklyData)
@@ -298,7 +272,6 @@ export function getWeeklyAggregates(weeks: number = 12) {
     .map((weekly) => ({
       name: `W${weekly.week}`,
       emissions: Math.round(weekly.totalEmissions),
-      consumption: Math.round(weekly.totalConsumption),
       equipmentCount: weekly.equipmentCount
     }))
 }
@@ -320,7 +293,6 @@ export function getMonthlyAggregates(months: number = 12) {
       monthNumber: number
       year: number
       totalEmissions: number
-      totalConsumption: number
     }
   } = {}
 
@@ -352,13 +324,11 @@ export function getMonthlyAggregates(months: number = 12) {
           month: monthNames[month],
           monthNumber: month,
           year,
-          totalEmissions: 0,
-          totalConsumption: 0
+          totalEmissions: 0
         }
       }
 
       monthlyData[key].totalEmissions += snapshot.metadata.totalEmissions
-      monthlyData[key].totalConsumption += snapshot.metadata.totalPowerDraw * 24
     })
 
   return Object.values(monthlyData)
@@ -369,8 +339,7 @@ export function getMonthlyAggregates(months: number = 12) {
     })
     .map((monthly) => ({
       name: monthly.month,
-      emissions: Math.round(monthly.totalEmissions),
-      consumption: Math.round(monthly.totalConsumption)
+      emissions: Math.round(monthly.totalEmissions)
     }))
 }
 

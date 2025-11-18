@@ -12,13 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    // Check localStorage first
-    const savedTheme = localStorage.getItem('theme') as Theme | null
-    console.log('Initial theme from localStorage:', savedTheme)
-    if (savedTheme) {
-      return savedTheme
-    }
-    // Default to light mode
+    // Always force light mode
     return 'light'
   })
 

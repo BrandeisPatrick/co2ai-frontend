@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Activity, Server, Zap } from 'lucide-react'
+import { Activity, Server } from 'lucide-react'
 import StatCard from '../components/dashboard/StatCard'
 import MonthlyEmissionsTrend from '../components/dashboard/MonthlyEmissionsTrend'
 import TopEquipmentChart from '../components/dashboard/TopEquipmentChart'
@@ -8,10 +8,8 @@ import { DashboardData } from '../types'
 import {
   getCurrentMonthData,
   getPreviousMonthData,
-  sumConsumption,
   sumEmissions,
   calculatePercentageChange,
-  kWhToMWh,
   kgToTons,
 } from '../utils/timeSeriesHelpers'
 
@@ -24,8 +22,7 @@ export default function Dashboard() {
       return null
     }
 
-    // Current day metrics from equipment
-    const totalEmissions = store.equipment.reduce((sum, eq) => sum + eq.dailyEmissions.value, 0)
+    // Get active equipment count
     const activeCount = store.equipment.length
 
     // Get current and previous month data from daily aggregates
@@ -36,12 +33,9 @@ export default function Dashboard() {
     // Calculate monthly totals
     const currentMonthEmissions = sumEmissions(currentMonthData)
     const previousMonthEmissions = sumEmissions(previousMonthData)
-    const currentMonthConsumption = sumConsumption(currentMonthData)
-    const previousMonthConsumption = sumConsumption(previousMonthData)
 
     // Calculate month-over-month changes
     const emissionsChangeData = calculatePercentageChange(currentMonthEmissions, previousMonthEmissions)
-    const consumptionChangeData = calculatePercentageChange(currentMonthConsumption, previousMonthConsumption)
 
     // Calculate week-over-week equipment count change
     const weeklyData = store.historicalData.weekly
@@ -51,7 +45,7 @@ export default function Dashboard() {
 
     return {
       emissions: {
-        total: kgToTons(totalEmissions), // Convert to tCO2e
+        total: kgToTons(currentMonthEmissions), // Convert to tCO2e (month-to-date)
         unit: 'tCO₂e',
         percentageChange: Math.round(emissionsChangeData.change),
         changeType: emissionsChangeData.type,
@@ -60,12 +54,6 @@ export default function Dashboard() {
         count: activeCount,
         percentageChange: Math.round(equipmentChangeData.change),
         changeType: equipmentChangeData.type,
-      },
-      monthlyConsumption: {
-        value: kWhToMWh(currentMonthConsumption),
-        unit: 'MWh',
-        percentageChange: Math.round(consumptionChangeData.change),
-        changeType: consumptionChangeData.type,
       },
       // Use real monthly trends from historical data
       monthlyTrend: store.historicalData.monthly.map((month) => ({
@@ -80,7 +68,7 @@ export default function Dashboard() {
           emissions: eq.dailyEmissions.value,
           color: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'][idx],
         })),
-    }
+    } as DashboardData
   }, [store.equipment, store.historicalData])
 
   if (isLoading && !data) {
@@ -123,7 +111,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatCard
           title="Total Emissions"
           value={data.emissions.total}
@@ -143,17 +131,6 @@ export default function Dashboard() {
             value: data.activeEquipment.percentageChange,
             type: data.activeEquipment.changeType,
             label: `${data.activeEquipment.percentageChange}% from last month`
-          }}
-        />
-        <StatCard
-          title="Monthly Consumption"
-          value={data.monthlyConsumption.value}
-          unit={data.monthlyConsumption.unit}
-          icon={Zap}
-          trend={{
-            value: data.monthlyConsumption.percentageChange,
-            type: data.monthlyConsumption.changeType,
-            label: `${data.monthlyConsumption.percentageChange}% from last month`
           }}
         />
       </div>
