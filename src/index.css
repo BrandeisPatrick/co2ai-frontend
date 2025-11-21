@@ -4,7 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased;
+    @apply text-gray-900 dark:text-gray-100 antialiased;
+    background: linear-gradient(135deg, #f8f9f7 0%, #f0f4ff 50%, #fffaf0 100%);
+  }
+
+  body.dark {
+    background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
   }
 }
 
