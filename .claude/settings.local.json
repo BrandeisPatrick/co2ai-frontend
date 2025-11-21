@@ -24,7 +24,9 @@
       "Bash(git push:*)",
       "Bash(npx create-expo-app@latest:*)",
       "Bash(timeout 30 npm run dev:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(dir:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []
