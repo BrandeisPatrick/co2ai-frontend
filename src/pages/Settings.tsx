@@ -5,15 +5,15 @@ export default function Settings() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage your application preferences</p>
+      <div className="mb-8 pt-12 md:pt-0">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Manage your application preferences</p>
       </div>
 
       {/* Appearance Section */}
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+      <div className="glass-card rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Appearance</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
           Customize how the application looks on your device
@@ -59,7 +59,7 @@ export default function Settings() {
         </div>
 
         {/* Theme Preview Cards */}
-        <div className="mt-6 grid grid-cols-2 gap-3">
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             onClick={() => theme === 'dark' && toggleTheme()}
             className={`p-2 rounded-lg border-2 transition-all ${
@@ -93,7 +93,7 @@ export default function Settings() {
       </div>
 
       {/* Data Source Section */}
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+      <div className="glass-card rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Data Source</h2>
         <div className="flex items-center gap-4 py-4">
           <div className="p-3 rounded-lg bg-amber-100 dark:bg-amber-900/30">

@@ -9,41 +9,89 @@ export function AnimatedBackground() {
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, #f8f9f7 0%, #f0f4ff 50%, #fffaf0 100%)',
+            background: 'linear-gradient(135deg, #f0f4f8 0%, #e8eef7 50%, #f0e8f5 100%)',
           }}
         />
 
-        {/* Animated orbs */}
+        {/* Animated orbs - Top left */}
         <motion.div
-          className="absolute w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-15"
           style={{
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-            top: '20%',
-            left: '10%',
+            background: 'linear-gradient(135deg, #c7d2e8 0%, #d4c5e2 100%)',
+            width: '500px',
+            height: '500px',
+            top: '-100px',
+            left: '-100px',
           }}
           animate={{
-            x: [0, 30, 0],
-            y: [0, 50, 0],
+            x: [0, 80, 0],
+            y: [0, 100, 0],
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
         />
+
+        {/* Animated orbs - Top right */}
         <motion.div
-          className="absolute w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-12"
           style={{
-            background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-            top: '60%',
-            right: '10%',
+            background: 'linear-gradient(135deg, #d9d0e8 0%, #e0d4e2 100%)',
+            width: '450px',
+            height: '450px',
+            top: '-50px',
+            right: '-50px',
           }}
           animate={{
-            x: [0, -30, 0],
-            y: [0, -50, 0],
+            x: [0, -60, 0],
+            y: [0, 80, 0],
           }}
           transition={{
-            duration: 10,
+            duration: 15,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Animated orbs - Bottom left */}
+        <motion.div
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-14"
+          style={{
+            background: 'linear-gradient(135deg, #d1dde8 0%, #cfe0f0 100%)',
+            width: '480px',
+            height: '480px',
+            bottom: '-100px',
+            left: '20%',
+          }}
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -80, 0],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Animated orbs - Bottom right */}
+        <motion.div
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-12"
+          style={{
+            background: 'linear-gradient(135deg, #dcd0e8 0%, #d8d5f0 100%)',
+            width: '420px',
+            height: '420px',
+            bottom: '-80px',
+            right: '5%',
+          }}
+          animate={{
+            x: [0, -90, 0],
+            y: [0, -100, 0],
+          }}
+          transition={{
+            duration: 16,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
@@ -56,41 +104,89 @@ export function AnimatedBackground() {
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%)',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #1a1528 100%)',
           }}
         />
 
-        {/* Animated orbs */}
+        {/* Animated orbs - Top left */}
         <motion.div
-          className="absolute w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-12"
           style={{
-            background: 'linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)',
-            top: '20%',
-            left: '10%',
+            background: 'linear-gradient(135deg, #1e3a5f 0%, #2a2456 100%)',
+            width: '500px',
+            height: '500px',
+            top: '-100px',
+            left: '-100px',
           }}
           animate={{
-            x: [0, 30, 0],
-            y: [0, 50, 0],
+            x: [0, 80, 0],
+            y: [0, 100, 0],
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
         />
+
+        {/* Animated orbs - Top right */}
         <motion.div
-          className="absolute w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-10"
           style={{
-            background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-            top: '60%',
-            right: '10%',
+            background: 'linear-gradient(135deg, #2a2461 0%, #1f1f50 100%)',
+            width: '450px',
+            height: '450px',
+            top: '-50px',
+            right: '-50px',
           }}
           animate={{
-            x: [0, -30, 0],
-            y: [0, -50, 0],
+            x: [0, -60, 0],
+            y: [0, 80, 0],
           }}
           transition={{
-            duration: 10,
+            duration: 15,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Animated orbs - Bottom left */}
+        <motion.div
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-11"
+          style={{
+            background: 'linear-gradient(135deg, #1a3a4a 0%, #1e2d3d 100%)',
+            width: '480px',
+            height: '480px',
+            bottom: '-100px',
+            left: '20%',
+          }}
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -80, 0],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        {/* Animated orbs - Bottom right */}
+        <motion.div
+          className="absolute rounded-full mix-blend-multiply filter blur-3xl opacity-10"
+          style={{
+            background: 'linear-gradient(135deg, #262250 0%, #1a2850 100%)',
+            width: '420px',
+            height: '420px',
+            bottom: '-80px',
+            right: '5%',
+          }}
+          animate={{
+            x: [0, -90, 0],
+            y: [0, -100, 0],
+          }}
+          transition={{
+            duration: 16,
             repeat: Infinity,
             ease: 'easeInOut',
           }}

@@ -103,15 +103,15 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-400">Real-time wet lab equipment emissions monitoring</p>
+      <div className="mb-8 pt-12 md:pt-0">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Real-time wet lab equipment emissions monitoring</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <StatCard
           index={0}
           title="Total Emissions"
@@ -138,7 +138,7 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <MonthlyEmissionsTrend data={data.monthlyTrend} />
         <TopEquipmentChart data={data.topEquipment} />
       </div>

@@ -14,7 +14,6 @@ function App() {
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="equipment" element={<EquipmentInventory />} />
-          <Route path="reports" element={<div className="p-6 text-gray-900 dark:text-white">Reports - Coming Soon</div>} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="settings" element={<Settings />} />
         </Route>

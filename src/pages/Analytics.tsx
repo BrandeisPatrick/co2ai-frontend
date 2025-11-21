@@ -136,20 +136,20 @@ export default function Analytics() {
   const avgEmissionsFormatted = formatEmissions(avgEmissions)
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="p-4 md:p-6 space-y-6 min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Analytics</h1>
-        <p className="text-gray-600 dark:text-gray-400">Equipment emissions and energy consumption trends</p>
+      <div className="mb-8 pt-12 md:pt-0">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Analytics</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Equipment emissions and energy consumption trends</p>
       </div>
 
       {/* Time Range Toggle */}
-      <div className="flex gap-2 bg-white dark:bg-gray-800 p-1 rounded-lg w-fit shadow-sm">
+      <div className="flex flex-wrap gap-2 glass-card p-1 rounded-lg w-fit">
         {(['week', 'month', 'year'] as const).map((range) => (
           <button
             key={range}
             onClick={() => setTimeRange(range)}
-            className={`px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+            className={`px-3 md:px-4 py-2 text-sm md:text-base rounded-md font-medium transition-all duration-200 ${
               timeRange === range
                 ? 'bg-emerald-500 dark:bg-blue-600 text-white shadow-md'
                 : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
@@ -161,28 +161,28 @@ export default function Analytics() {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Emissions</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalEmissionsFormatted.value}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div className="glass-card rounded-lg p-3 md:p-4">
+          <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm mb-1">Total Emissions</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white">{totalEmissionsFormatted.value}</p>
           <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{totalEmissionsFormatted.unit}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Avg Emissions</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgEmissionsFormatted.value}</p>
+        <div className="glass-card rounded-lg p-3 md:p-4">
+          <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm mb-1">Avg Emissions</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white">{avgEmissionsFormatted.value}</p>
           <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgEmissionsFormatted.unit}</p>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         {/* Total Emissions Chart */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Total Emissions</h2>
+        <div className="glass-card rounded-lg p-3 md:p-6 hover:shadow-2xl transition-shadow overflow-x-auto">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
+            <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 md:mb-0">Total Emissions</h2>
             <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{totalEmissionsFormatted.unit}</span>
           </div>
-          <ResponsiveContainer width="100%" height={350}>
+          <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 180 : 300} minWidth={300}>
             <LineChart
               data={data}
               margin={{ top: 5, right: 30, left: 0, bottom: 5 }}

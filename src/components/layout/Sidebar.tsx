@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   Package,
-  FileText,
   BarChart3,
   Settings,
   Leaf
@@ -17,16 +16,23 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
   { name: 'Equipment Inventory', path: '/equipment', icon: <Package size={20} /> },
-  { name: 'Reports', path: '/reports', icon: <FileText size={20} /> },
   { name: 'Analytics', path: '/analytics', icon: <BarChart3 size={20} /> },
   { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
 ]
 
-export default function Sidebar() {
+interface SidebarProps {
+  onCloseMobile?: () => void
+}
+
+export default function Sidebar({ onCloseMobile }: SidebarProps) {
   const location = useLocation()
 
+  const handleNavClick = () => {
+    onCloseMobile?.()
+  }
+
   return (
-    <aside className="w-64 glass-sidebar flex flex-col">
+    <aside className="w-64 glass-sidebar flex flex-col h-screen md:h-auto">
       {/* Logo and Title */}
       <div className="p-4 border-b border-white/20 dark:border-gray-800/50">
         <div className="flex items-center gap-3">
@@ -34,7 +40,7 @@ export default function Sidebar() {
             <Leaf className="text-white" size={24} />
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-gray-900 dark:text-white">Green Bio Compute</h1>
+            <h1 className="text-sm font-semibold text-gray-100">Green Bio Compute</h1>
           </div>
         </div>
       </div>
@@ -54,11 +60,12 @@ export default function Sidebar() {
               <li key={item.path}>
                 <Link
                   to={item.path}
+                  onClick={handleNavClick}
                   className={`
                     flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
                     ${isActive
                       ? 'bg-emerald-500 dark:bg-blue-600 text-white'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                      : 'text-gray-100 hover:bg-white/20 dark:hover:bg-gray-700/20 hover:text-gray-100'
                     }
                   `}
                 >

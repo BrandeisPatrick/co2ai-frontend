@@ -10,9 +10,9 @@ export default function MonthlyEmissionsTrend({ data }: MonthlyEmissionsTrendPro
   const isDark = document.documentElement.classList.contains('dark')
 
   return (
-    <div className="glass-card rounded-xl p-6">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Monthly Emissions Trend</h2>
-      <ResponsiveContainer width="100%" height={300}>
+    <div className="glass-card rounded-xl p-3 md:p-6">
+      <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-4 md:mb-6">Monthly Emissions Trend</h2>
+      <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 200 : 300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#374151" : "#E5E7EB"} vertical={false} />
           <XAxis
