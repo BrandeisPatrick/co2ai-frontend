@@ -1,4 +1,5 @@
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface StatCardProps {
   title: string;
@@ -11,6 +12,7 @@ interface StatCardProps {
     label: string;
   };
   improvement?: boolean;
+  index?: number;
 }
 
 export default function StatCard({
@@ -19,7 +21,8 @@ export default function StatCard({
   unit,
   icon: Icon,
   trend,
-  improvement
+  improvement,
+  index = 0
 }: StatCardProps) {
   const getTrendColor = () => {
     if (!trend) return ''
@@ -36,31 +39,63 @@ export default function StatCard({
   const TrendIcon = trend?.type === 'increase' ? TrendingUp : TrendingDown
 
   return (
-    <div className="glass-card-hover rounded-xl p-5">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      whileHover={{
+        y: -5,
+        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+      }}
+      className="glass-card-hover rounded-xl p-5 cursor-default"
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <Icon size={20} className="text-gray-600 dark:text-gray-400" />
-          </div>
+          <motion.div
+            className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 dark:from-blue-500/20 dark:to-blue-600/20 rounded-lg border border-emerald-500/30 dark:border-blue-500/30"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <Icon size={20} className="text-emerald-600 dark:text-blue-400" />
+          </motion.div>
         </div>
         {trend && (
-          <div className={`flex items-center gap-1 text-sm ${getTrendColor()}`}>
+          <motion.div
+            className={`flex items-center gap-1 text-sm font-semibold ${getTrendColor()}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             <TrendIcon size={16} />
-            <span className="font-medium">{trend.value}%</span>
-          </div>
+            <span>{trend.value}%</span>
+          </motion.div>
         )}
       </div>
 
       <div className="space-y-1">
-        <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</h3>
+        <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{title}</h3>
         <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-bold text-gray-900 dark:text-white">{value}</span>
-          {unit && <span className="text-sm text-gray-500">{unit}</span>}
+          <motion.span
+            className="text-3xl font-bold text-gray-900 dark:text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+          >
+            {value}
+          </motion.span>
+          {unit && <span className="text-sm font-medium text-gray-400 dark:text-gray-500">{unit}</span>}
         </div>
         {trend && (
-          <p className="text-xs text-gray-500 mt-2">{trend.label}</p>
+          <motion.p
+            className="text-xs text-gray-500 dark:text-gray-400 mt-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            {trend.label}
+          </motion.p>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }

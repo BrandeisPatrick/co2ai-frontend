@@ -113,6 +113,7 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatCard
+          index={0}
           title="Total Emissions"
           value={data.emissions.total}
           unit={data.emissions.unit}
@@ -124,6 +125,7 @@ export default function Dashboard() {
           }}
         />
         <StatCard
+          index={1}
           title="Active Equipment"
           value={data.activeEquipment.count}
           icon={Server}
