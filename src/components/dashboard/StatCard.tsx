@@ -20,8 +20,7 @@ export default function StatCard({
   unit,
   icon: Icon,
   trend,
-  improvement,
-  index = 0
+  improvement
 }: StatCardProps) {
   const getTrendColor = () => {
     if (!trend) return ''

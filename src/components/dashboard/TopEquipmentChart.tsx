@@ -34,7 +34,7 @@ export default function TopEquipmentChart({ data }: TopEquipmentChartProps) {
             type="category"
             dataKey="name"
             stroke={isDark ? "#6B7280" : "#9CA3AF"}
-            tick={{ fill: isDark ? '#9CA3AF' : '#6B7280', fontSize: window.innerWidth < 768 ? 11 : 12, angle: window.innerWidth < 768 ? 0 : 0 }}
+            tick={{ fill: isDark ? '#9CA3AF' : '#6B7280', fontSize: window.innerWidth < 768 ? 11 : 12 }}
             tickLine={false}
             axisLine={{ stroke: isDark ? '#374151' : '#E5E7EB' }}
             width={window.innerWidth < 768 ? 110 : 110}

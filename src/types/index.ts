@@ -53,6 +53,7 @@ export type EquipmentType =
   | 'Microscope'
   | 'Spectrophotometer'
   | 'GPU'
+  | 'GPU Accelerator'
   | 'CPU';
 
 export interface Equipment {
