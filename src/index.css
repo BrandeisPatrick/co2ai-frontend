@@ -17,4 +17,25 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Glassmorphism / Liquid Glass Effects */
+  .glass-card {
+    @apply bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-white/20 dark:border-gray-700/30;
+  }
+
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/80 dark:hover:bg-gray-900/80 hover:border-white/30 dark:hover:border-gray-700/40 transition-all duration-300;
+  }
+
+  .glass-sidebar {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border-r border-white/20 dark:border-gray-800/50;
+  }
+
+  .glass-modal {
+    @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl;
+  }
+
+  .glass-overlay {
+    @apply bg-black/20 backdrop-blur-sm;
+  }
 }

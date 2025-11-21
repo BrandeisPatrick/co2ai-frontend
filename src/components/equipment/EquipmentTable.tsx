@@ -65,9 +65,9 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
   })
 
   return (
-    <div className="w-full overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="w-full overflow-x-auto glass-card rounded-lg">
       <table className="w-full">
-        <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <thead className="bg-white/50 dark:bg-gray-900/50 border-b border-white/20 dark:border-gray-700/30">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (

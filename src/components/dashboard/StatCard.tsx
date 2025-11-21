@@ -36,7 +36,7 @@ export default function StatCard({
   const TrendIcon = trend?.type === 'increase' ? TrendingUp : TrendingDown
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+    <div className="glass-card-hover rounded-xl p-5">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">

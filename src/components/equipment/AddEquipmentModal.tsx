@@ -102,14 +102,14 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="glass-overlay absolute inset-0"
         onClick={handleClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden m-4">
+      <div className="glass-modal relative rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden m-4 border border-white/20 dark:border-gray-700/30">
         {/* Header */}
-        <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 glass-modal border-b border-white/20 dark:border-gray-700/30 px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Add New Equipment</h2>
           <button
             onClick={handleClose}

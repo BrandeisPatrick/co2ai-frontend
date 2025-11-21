@@ -26,9 +26,9 @@ export default function Sidebar() {
   const location = useLocation()
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+    <aside className="w-64 glass-sidebar flex flex-col">
       {/* Logo and Title */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="p-4 border-b border-white/20 dark:border-gray-800/50">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-blue-500 dark:to-blue-600 rounded-lg flex items-center justify-center">
             <Leaf className="text-white" size={24} />

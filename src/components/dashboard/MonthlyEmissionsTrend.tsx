@@ -10,7 +10,7 @@ export default function MonthlyEmissionsTrend({ data }: MonthlyEmissionsTrendPro
   const isDark = document.documentElement.classList.contains('dark')
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+    <div className="glass-card rounded-xl p-6">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Monthly Emissions Trend</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>

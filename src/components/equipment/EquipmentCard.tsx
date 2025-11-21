@@ -8,9 +8,9 @@ interface EquipmentCardProps {
 export default function EquipmentCard({ equipment }: EquipmentCardProps) {
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-xl overflow-hidden transition-colors">
+    <div className="glass-card-hover rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="p-4 border-b border-white/20 dark:border-gray-800/30">
         <div className="flex items-start justify-between mb-2">
           <div className="flex-1 min-w-0">
             <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1 truncate">
