@@ -1,5 +1,4 @@
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react'
-import { motion } from 'framer-motion'
 
 interface StatCardProps {
   title: string;
@@ -39,63 +38,35 @@ export default function StatCard({
   const TrendIcon = trend?.type === 'increase' ? TrendingUp : TrendingDown
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      whileHover={{
-        y: -5,
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
-      }}
-      className="glass-card-hover rounded-xl p-5 cursor-default"
-    >
+    <div className="glass-card-hover rounded-xl p-5 cursor-default">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <motion.div
-            className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 dark:from-blue-500/20 dark:to-blue-600/20 rounded-lg border border-emerald-500/30 dark:border-blue-500/30"
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
+          <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 dark:from-blue-500/20 dark:to-blue-600/20 rounded-lg border border-emerald-500/30 dark:border-blue-500/30">
             <Icon size={20} className="text-emerald-600 dark:text-blue-400" />
-          </motion.div>
+          </div>
         </div>
         {trend && (
-          <motion.div
-            className={`flex items-center gap-1 text-sm font-semibold ${getTrendColor()}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div className={`flex items-center gap-1 text-sm font-semibold ${getTrendColor()}`}>
             <TrendIcon size={16} />
             <span>{trend.value}%</span>
-          </motion.div>
+          </div>
         )}
       </div>
 
       <div className="space-y-1">
         <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{title}</h3>
         <div className="flex items-baseline gap-2">
-          <motion.span
-            className="text-3xl font-bold text-gray-900 dark:text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-          >
+          <span className="text-3xl font-bold text-gray-900 dark:text-white">
             {value}
-          </motion.span>
+          </span>
           {unit && <span className="text-sm font-medium text-gray-400 dark:text-gray-500">{unit}</span>}
         </div>
         {trend && (
-          <motion.p
-            className="text-xs text-gray-500 dark:text-gray-400 mt-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
             {trend.label}
-          </motion.p>
+          </p>
         )}
       </div>
-    </motion.div>
+    </div>
   )
 }
