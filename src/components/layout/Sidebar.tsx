@@ -35,7 +35,6 @@ export default function Sidebar() {
           </div>
           <div>
             <h1 className="text-sm font-semibold text-gray-900 dark:text-white">Green Bio Compute</h1>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Wet Lab Module</p>
           </div>
         </div>
       </div>

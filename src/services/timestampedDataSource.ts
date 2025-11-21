@@ -111,6 +111,60 @@ const baseEquipment: Equipment[] = [
     type: 'Ultra-Low Freezer',
     dailyEmissions: { value: 46, unit: 'kgCO₂e' },
     category: 'wet-lab'
+  },
+  {
+    id: '13',
+    name: 'NVIDIA Tesla T4',
+    equipmentId: '#013',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 45, unit: 'kgCO₂e' },
+    category: 'dry-lab'
+  },
+  {
+    id: '14',
+    name: 'NVIDIA A100 80GB',
+    equipmentId: '#014',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 85, unit: 'kgCO₂e' },
+    category: 'dry-lab'
+  },
+  {
+    id: '15',
+    name: 'NVIDIA V100 32GB',
+    equipmentId: '#015',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 72, unit: 'kgCO₂e' },
+    category: 'dry-lab'
+  },
+  {
+    id: '16',
+    name: 'NVIDIA H100 80GB',
+    equipmentId: '#016',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 110, unit: 'kgCO₂e' },
+    category: 'dry-lab'
+  },
+  {
+    id: '17',
+    name: 'NVIDIA RTX A6000',
+    equipmentId: '#017',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 55, unit: 'kgCO₂e' },
+    category: 'dry-lab'
+  },
+  {
+    id: '18',
+    name: 'NVIDIA L40',
+    equipmentId: '#018',
+    manufacturer: 'NVIDIA',
+    type: 'GPU Accelerator',
+    dailyEmissions: { value: 62, unit: 'kgCO₂e' },
+    category: 'dry-lab'
   }
 ]
 
