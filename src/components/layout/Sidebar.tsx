@@ -40,7 +40,7 @@ export default function Sidebar({ onCloseMobile }: SidebarProps) {
             <Leaf className="text-white" size={24} />
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-gray-100">Green Bio Compute</h1>
+            <h1 className="text-sm font-semibold text-gray-900 md:text-gray-700">Green Bio Compute</h1>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function Sidebar({ onCloseMobile }: SidebarProps) {
                     flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
                     ${isActive
                       ? 'bg-emerald-500 dark:bg-blue-600 text-white'
-                      : 'text-gray-100 hover:bg-white/20 dark:hover:bg-gray-700/20 hover:text-gray-100'
+                      : 'text-gray-900 md:text-gray-700 hover:bg-white/20 dark:hover:bg-gray-700/20 hover:text-gray-900 md:hover:text-gray-700'
                     }
                   `}
                 >
