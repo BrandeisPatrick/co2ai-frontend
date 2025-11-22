@@ -1,11 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <defs>
-    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+    <linearGradient id="carbonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
     </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="32" height="32" rx="6" fill="url(#leafGradient)"/>
-  <path d="M16 6C13 6 10 8 10 12C10 16 13 19 16 22C16 19 18 16 22 14C24 13 26 11 26 9C26 7 24 6 22 6C20 6 18 7 17 8.5C16.5 7.5 15.5 6 16 6Z" fill="white" opacity="0.95"/>
-  <path d="M16 22C19 19 22 16 22 12C22 10 21 8.5 19.5 8C18.5 7.7 17.5 8 16.8 8.8C17.5 10 18 11.5 18 13C18 16 16.5 18.5 16 22Z" fill="white" opacity="0.7"/>
+  <!-- Rounded background -->
+  <rect width="32" height="32" rx="6" fill="url(#carbonGradient)"/>
+
+  <!-- Outer circle (carbon cycle ring) -->
+  <circle cx="16" cy="16" r="12" fill="none" stroke="white" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- Three carbon atoms positioned in a triangle -->
+  <!-- Top atom -->
+  <circle cx="16" cy="8" r="2" fill="white" filter="url(#glow)"/>
+
+  <!-- Bottom left atom -->
+  <circle cx="10" cy="20" r="2" fill="white" filter="url(#glow)"/>
+
+  <!-- Bottom right atom -->
+  <circle cx="22" cy="20" r="2" fill="white" filter="url(#glow)"/>
+
+  <!-- Central oxygen molecule (small) -->
+  <circle cx="16" cy="16" r="1.2" fill="white" opacity="0.8"/>
+
+  <!-- Connection lines (representing bonds) -->
+  <line x1="16" y1="8" x2="16" y2="16" stroke="white" stroke-width="0.6" opacity="0.6"/>
+  <line x1="16" y1="16" x2="10" y2="20" stroke="white" stroke-width="0.6" opacity="0.6"/>
+  <line x1="16" y1="16" x2="22" y2="20" stroke="white" stroke-width="0.6" opacity="0.6"/>
+
+  <!-- Circular arrows indicating cycle -->
+  <path d="M 24 16 Q 26 14 25 12" fill="none" stroke="white" stroke-width="0.5" opacity="0.5" stroke-linecap="round"/>
+  <path d="M 8 16 Q 6 14 7 12" fill="none" stroke="white" stroke-width="0.5" opacity="0.5" stroke-linecap="round"/>
+  <path d="M 16 24 Q 18 26 20 24" fill="none" stroke="white" stroke-width="0.5" opacity="0.5" stroke-linecap="round"/>
 </svg>
