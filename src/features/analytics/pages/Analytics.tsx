@@ -123,7 +123,7 @@ export default function Analytics() {
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div className="glass-card rounded-lg p-3 md:p-4">
-          <p className="text-gray-600 text-xs md:text-sm mb-1">Total Emissions</p>
+          <p className="text-gray-600 text-xs md:text-sm mb-1">{timeRange === 'week' ? 'Weekly' : timeRange === 'month' ? 'Monthly' : 'Yearly'} Emissions</p>
           <p className="text-lg md:text-2xl font-bold text-gray-900">{totalEmissionsFormatted.value}</p>
           <p className="text-gray-500 text-xs mt-1">{totalEmissionsFormatted.unit}</p>
         </div>
@@ -138,7 +138,7 @@ export default function Analytics() {
       <div className="space-y-4 md:space-y-6">
         <EmissionsLineChart
           data={data}
-          title="Total Emissions"
+          title={`${timeRange === 'week' ? 'Weekly' : timeRange === 'month' ? 'Monthly' : 'Yearly'} Emissions`}
           unit={totalEmissionsFormatted.unit}
         />
       </div>

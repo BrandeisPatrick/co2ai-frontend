@@ -1,0 +1,41 @@
+Category,Name,Lab Type,Carbon Footprint (kgCO2e),Annual Usage (hours),Annual Carbon Impact (kgCO2e),Equipment Type,Manufacturer,Has API,API Vendor,Energy Consumption (kWh),Equipment.png
+Laboratory Equipment,Refrigerator (4°C),wet-lab,120,8760,1051,Cold Storage,Thermo Fisher,FALSE,,1281.71,refrigerator_4c.png
+Laboratory Equipment,Freezer (–20°C),wet-lab,250,8760,2190,Cold Storage,Panasonic,FALSE,,2670.73,freezer_minus_20c.png
+Laboratory Equipment,ULT Freezer (–80°C),wet-lab,5000,8760,43800,Cold Storage,Eppendorf,TRUE,Panasonic IoT,53414.63,ult_freezer_minus_80c.png
+Laboratory Equipment,CO₂ Incubator,wet-lab,750,8760,6570,Incubation,Sanyo,FALSE,,8012.20,co2_incubator.png
+Laboratory Equipment,Shaking Incubator,wet-lab,600,6000,3600,Incubation,New Brunswick,FALSE,,4390.24,shaking_incubator.png
+Laboratory Equipment,Water Bath,wet-lab,150,4000,600,Heating,Thermo Fisher,FALSE,,731.71,water_bath.png
+Laboratory Equipment,Dry Bath,wet-lab,100,2000,200,Heating,Eppendorf,FALSE,,243.90,dry_bath.png
+Laboratory Equipment,Ice Machine,wet-lab,300,8760,2628,Support Equipment,Hoshizaki,FALSE,,3204.88,ice_machine.png
+Laboratory Equipment,Ice Bucket,wet-lab,10,500,5,Support Equipment,Nalgene,FALSE,,6.10,ice_bucket.png
+Laboratory Equipment,Cryogenic Storage (LN₂ Tank),wet-lab,1200,8760,10512,Storage,Taylor-Wharton,FALSE,,12819.51,cryogenic_storage.png
+Laboratory Equipment,Analytical Balance / Precision Balance,wet-lab,80,2000,160,Measurement,Mettler Toledo,FALSE,,195.12,analytical_balance.png
+Laboratory Equipment,pH Meter,wet-lab,100,1500,150,Measurement,Hanna Instruments,FALSE,,182.93,ph_meter.png
+Laboratory Equipment,Magnetic Stirrer / Hot Plate,wet-lab,200,3000,600,Mixing,Ika,FALSE,,731.71,magnetic_stirrer.png
+Laboratory Equipment,Vortex Mixer,wet-lab,150,2500,375,Mixing,Scientific Industries,FALSE,,457.32,vortex_mixer.png
+Laboratory Equipment,Centrifuge (Microcentrifuge),wet-lab,400,2000,800,Separation,Eppendorf,FALSE,,975.61,centrifuge_micro.png
+Laboratory Equipment,Centrifuge (High-Speed),wet-lab,800,2500,2000,Separation,Beckman Coulter,TRUE,Beckman Connect,2439.02,centrifuge_high_speed.png
+Laboratory Equipment,Centrifuge (Ultracentrifuge),wet-lab,2500,3000,7500,Separation,Hitachi,TRUE,Hitachi LabLink,9146.34,centrifuge_ultra.png
+Laboratory Equipment,Laminar Flow Hood / Biosafety Cabinet (Class II),wet-lab,1800,4000,7200,Sterile Workstation,ESCO,FALSE,,8780.49,laminar_flow_hood.png
+Laboratory Equipment,Autoclave (for Sterilization),wet-lab,2500,2000,5000,Sterilization,Tuttnauer,FALSE,,6097.56,autoclave_sterilization.png
+Laboratory Equipment,Spectrophotometer / NanoDrop,wet-lab,300,1500,450,Analytical Equipment,Thermo Fisher,TRUE,Thermo Cloud,548.78,spectrophotometer.png
+Laboratory Equipment,Gel Electrophoresis System (Agarose SDS-PAGE),wet-lab,200,1000,200,Analytical Equipment,Bio-Rad,FALSE,,243.90,gel_electrophoresis.png
+Laboratory Equipment,Shaking Incubator for Culture Flasks,wet-lab,700,4000,2800,Incubation,New Brunswick,FALSE,,3414.63,shaking_incubator_flasks.png
+Laboratory Equipment,CO₂ Incubator (for Mammalian Cells),wet-lab,800,8760,7000,Incubation,Sanyo,FALSE,,8536.59,co2_incubator_mammalian.png
+Laboratory Equipment,Vacuum Pump and Filtration System,wet-lab,600,3000,1800,Filtration,Millipore,FALSE,,2195.12,vacuum_pump.png
+Laboratory Equipment,Chromatography System (HPLC),wet-lab,1500,3000,4500,Separation,Agilent,TRUE,Agilent OpenLab,5487.80,chromatography_hplc.png
+Laboratory Equipment,Chromatography System (FPLC),wet-lab,1200,2500,3000,Separation,Cytiva,TRUE,UNICORN,3658.54,chromatography_fplc.png
+Laboratory Equipment,Autoclave,wet-lab,2500,2000,5000,Sterilization,Sanyo,FALSE,,6097.56,autoclave.png
+Laboratory Equipment,UV Sterilizer / Crosslinker,wet-lab,300,1000,300,Sterilization,UVP,FALSE,,365.85,uv_sterilizer.png
+Laboratory Equipment,Fume Hood / Chemical Hood,wet-lab,2000,8760,17520,Safety,Labconco,FALSE,,21365.85,fume_hood.png
+Data Management,Barcode Scanners and Label Printers,wet-lab,150,3000,450,Support,Zebra,TRUE,Zebra API,548.78,barcode_scanners.png
+Laboratory Equipment,Calibrated Timers and Thermometers,wet-lab,50,2000,100,Measurement,Fisherbrand,FALSE,,121.95,calibrated_timers.png
+Laboratory Consumables,pH Calibration Buffers and Standards,wet-lab,30,500,15,Consumables,Hanna Instruments,FALSE,,18.29,ph_calibration_buffers.png
+Compute Infrastructure,GPU Accelerator (NVIDIA A100),dry-lab,2500,8760,21900,GPU Accelerator,NVIDIA,TRUE,NVIDIA DCGM,26707.32,
+Compute Infrastructure,GPU Accelerator (NVIDIA H100),dry-lab,3500,8760,30660,GPU Accelerator,NVIDIA,TRUE,NVIDIA DCGM,37390.24,
+Compute Infrastructure,GPU Accelerator (NVIDIA RTX 4090),dry-lab,1200,6000,7200,GPU Accelerator,NVIDIA,TRUE,NVIDIA SMI,8780.49,
+Compute Infrastructure,High-Performance Workstation,dry-lab,800,8760,7008,Workstation,Dell,FALSE,,8546.34,
+Compute Infrastructure,Server Rack (42U),dry-lab,15000,8760,131400,Server,HPE,TRUE,HPE iLO,160243.90,
+Compute Infrastructure,Network Storage (NAS),dry-lab,500,8760,4380,Storage,Synology,TRUE,Synology API,5341.46,
+Data Management,Laboratory Information Management System (LIMS),dry-lab,1000,8760,8760,Software,Thermo Fisher,TRUE,Thermo Cloud,10682.93,
+Compute Infrastructure,ML Training Cluster,dry-lab,25000,8760,219000,GPU Accelerator,NVIDIA DGX,TRUE,NVIDIA Base Command,267073.17,

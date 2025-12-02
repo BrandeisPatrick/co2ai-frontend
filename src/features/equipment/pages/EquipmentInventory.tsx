@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Plus } from 'lucide-react'
+import { Search, Plus, FlaskConical, Cpu } from 'lucide-react'
 import EquipmentCard from '../components/EquipmentCard'
 import AddEquipmentModal from '../components/AddEquipmentModal'
 import { ViewToggle } from '../components/ViewToggle'
@@ -9,9 +9,12 @@ import { useDataContext } from '@/shared/hooks/useDataContext'
 import { useEquipmentSearch } from '../hooks/useEquipmentSearch'
 import { SkeletonEquipmentGrid, SkeletonTable } from '@/shared/components/ui/skeleton'
 
+type LabFilter = 'all' | 'wet-lab' | 'dry-lab';
+
 export default function EquipmentInventory() {
   const { store, isLoading, error, addEquipment } = useDataContext()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [labFilter, setLabFilter] = useState<LabFilter>('all')
 
   const {
     searchQuery,
@@ -20,6 +23,16 @@ export default function EquipmentInventory() {
     setViewMode,
     filteredEquipment,
   } = useEquipmentSearch({ equipment: store.equipment })
+
+  // Apply lab filter
+  const displayEquipment = labFilter === 'all'
+    ? filteredEquipment
+    : filteredEquipment.filter(eq => {
+        // Check equipment type to determine lab type
+        const dryLabTypes = ['GPU Accelerator', 'GPU', 'CPU', 'Workstation', 'Server', 'Software', 'Storage'];
+        const isDryLab = dryLabTypes.some(t => eq.type?.includes(t) || eq.name?.toLowerCase().includes('gpu') || eq.name?.toLowerCase().includes('server'));
+        return labFilter === 'dry-lab' ? isDryLab : !isDryLab;
+      })
 
   const handleAddEquipment = () => {
     setIsModalOpen(true)
@@ -36,6 +49,17 @@ export default function EquipmentInventory() {
     } catch (err) {
       console.error('Error adding equipment:', err)
       alert('Failed to add equipment. Please try again.')
+    }
+  }
+
+  const getSubtitle = () => {
+    switch (labFilter) {
+      case 'wet-lab':
+        return 'Manage and monitor your wet lab equipment'
+      case 'dry-lab':
+        return 'Manage and monitor your compute infrastructure'
+      default:
+        return 'Manage and monitor your lab equipment'
     }
   }
 
@@ -74,7 +98,7 @@ export default function EquipmentInventory() {
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6 pt-12 md:pt-0">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Equipment Inventory</h1>
-            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Manage and monitor your wet lab equipment</p>
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">{getSubtitle()}</p>
           </div>
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
@@ -86,6 +110,42 @@ export default function EquipmentInventory() {
               Add Equipment
             </button>
           </div>
+        </div>
+
+        {/* Lab Type Filter */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => setLabFilter('all')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              labFilter === 'all'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setLabFilter('wet-lab')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              labFilter === 'wet-lab'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            <FlaskConical size={16} />
+            Wet Lab
+          </button>
+          <button
+            onClick={() => setLabFilter('dry-lab')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              labFilter === 'dry-lab'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            <Cpu size={16} />
+            Dry Lab
+          </button>
         </div>
 
         {/* Search Bar */}
@@ -101,7 +161,7 @@ export default function EquipmentInventory() {
         </div>
 
         {/* Equipment Display - Grid or List View */}
-        {filteredEquipment.length === 0 ? (
+        {displayEquipment.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-600 dark:text-gray-400">
               {searchQuery ? 'No equipment found matching your search.' : 'No equipment available.'}
@@ -109,7 +169,7 @@ export default function EquipmentInventory() {
           </div>
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredEquipment.map((item) => (
+            {displayEquipment.map((item) => (
               <EquipmentCard
                 key={item.id}
                 equipment={item}
@@ -118,7 +178,7 @@ export default function EquipmentInventory() {
           </div>
         ) : (
           <EquipmentTable
-            equipment={filteredEquipment}
+            equipment={displayEquipment}
           />
         )}
       </div>
