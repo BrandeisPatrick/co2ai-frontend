@@ -7,6 +7,11 @@
     @apply text-gray-900 antialiased;
     background: linear-gradient(135deg, #ffffff 0%, #f8f6ff 50%, #fff8f5 100%);
   }
+
+  .dark body {
+    @apply text-gray-100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  }
 }
 
 @layer utilities {
@@ -24,19 +29,39 @@
     @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-lg;
   }
 
+  .dark .glass-card {
+    @apply bg-gray-900/30 border-gray-700/30;
+  }
+
   .glass-card-hover {
     @apply glass-card hover:bg-white/20 hover:border-white/30 hover:shadow-xl transition-all duration-300;
+  }
+
+  .dark .glass-card-hover {
+    @apply bg-gray-900/30 border-gray-700/30 hover:bg-gray-800/40 hover:border-gray-600/40;
   }
 
   .glass-sidebar {
     @apply bg-white/10 backdrop-blur-2xl border-r border-white/20;
   }
 
+  .dark .glass-sidebar {
+    @apply bg-gray-900/30 border-gray-700/30;
+  }
+
   .glass-modal {
     @apply bg-white/20 backdrop-blur-2xl;
   }
 
+  .dark .glass-modal {
+    @apply bg-gray-900/40;
+  }
+
   .glass-overlay {
     @apply bg-black/20 backdrop-blur-sm;
+  }
+
+  .dark .glass-overlay {
+    @apply bg-black/40;
   }
 }

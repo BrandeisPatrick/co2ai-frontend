@@ -73,14 +73,14 @@ export default function EquipmentInventory() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6 pt-12 md:pt-0">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Equipment Inventory</h1>
-            <p className="text-sm md:text-base text-gray-600">Manage and monitor your wet lab equipment</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Equipment Inventory</h1>
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Manage and monitor your wet lab equipment</p>
           </div>
           <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
             <button
               onClick={handleAddEquipment}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors w-full md:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors w-full md:w-auto"
             >
               <Plus size={20} />
               Add Equipment
@@ -90,20 +90,20 @@ export default function EquipmentInventory() {
 
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={20} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-400" size={20} />
           <input
             type="text"
             placeholder="Search equipment by name or type..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-emerald-600 transition-colors"
+            className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-400 transition-colors"
           />
         </div>
 
         {/* Equipment Display - Grid or List View */}
         {filteredEquipment.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               {searchQuery ? 'No equipment found matching your search.' : 'No equipment available.'}
             </p>
           </div>

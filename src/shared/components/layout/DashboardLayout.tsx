@@ -11,7 +11,7 @@ export default function DashboardLayout() {
       {/* Mobile hamburger button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-40 md:hidden p-2 text-gray-900 hover:bg-white/20 rounded-lg transition-colors"
+        className="fixed top-4 left-4 z-40 md:hidden p-2 text-gray-900 dark:text-gray-100 hover:bg-white/20 dark:hover:bg-gray-800/40 rounded-lg transition-colors"
         aria-label="Toggle sidebar"
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}

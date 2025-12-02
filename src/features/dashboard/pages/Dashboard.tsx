@@ -28,7 +28,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-gray-600">No data available yet</p>
+          <p className="text-gray-600 dark:text-gray-400">No data available yet</p>
         </div>
       </div>
     )
@@ -38,8 +38,8 @@ export default function Dashboard() {
     <div className="p-4 md:p-6 space-y-6">
       {/* Header */}
       <div className="mb-8 pt-12 md:pt-0">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-sm md:text-base text-gray-600">Real-time wet lab equipment emissions monitoring</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Dashboard</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Real-time wet lab equipment emissions monitoring</p>
       </div>
 
       {/* Stats Grid */}

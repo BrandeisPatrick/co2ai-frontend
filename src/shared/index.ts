@@ -14,6 +14,7 @@ export { ErrorBoundary } from './components/ErrorBoundary'
 
 // Contexts
 export { DataContextProvider } from './contexts/DataContext'
+export { ThemeProvider, useTheme } from './contexts/ThemeContext'
 
 // Hooks
 export { useDataContext } from './hooks/useDataContext'
