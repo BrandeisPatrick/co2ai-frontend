@@ -8,9 +8,6 @@
     "css": "src/index.css"
   },
   "aliases": {
-    "@/components": "./src/components",
-    "@/ui": "./src/components/ui",
-    "@/lib": "./src/lib",
-    "@/hooks": "./src/hooks"
+    "@/lib": "./src/lib"
   }
 }
