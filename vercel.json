@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/record-emissions",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

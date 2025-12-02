@@ -4,12 +4,8 @@
 
 @layer base {
   body {
-    @apply text-gray-900 dark:text-gray-100 antialiased;
+    @apply text-gray-900 antialiased;
     background: linear-gradient(135deg, #ffffff 0%, #f8f6ff 50%, #fff8f5 100%);
-  }
-
-  body.dark {
-    background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #1a1528 100%);
   }
 }
 
@@ -25,19 +21,19 @@
 
   /* Glassmorphism / Liquid Glass Effects */
   .glass-card {
-    @apply bg-white/10 dark:bg-gray-700/20 backdrop-blur-2xl border border-white/20 dark:border-gray-400/20 shadow-lg dark:shadow-lg;
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-lg;
   }
 
   .glass-card-hover {
-    @apply glass-card hover:bg-white/20 dark:hover:bg-gray-700/30 hover:border-white/30 dark:hover:border-gray-400/30 hover:shadow-xl dark:hover:shadow-xl transition-all duration-300;
+    @apply glass-card hover:bg-white/20 hover:border-white/30 hover:shadow-xl transition-all duration-300;
   }
 
   .glass-sidebar {
-    @apply bg-white/10 dark:bg-gray-700/20 backdrop-blur-2xl border-r border-white/20 dark:border-gray-400/20;
+    @apply bg-white/10 backdrop-blur-2xl border-r border-white/20;
   }
 
   .glass-modal {
-    @apply bg-white/20 dark:bg-gray-700/30 backdrop-blur-2xl;
+    @apply bg-white/20 backdrop-blur-2xl;
   }
 
   .glass-overlay {

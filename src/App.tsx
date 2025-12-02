@@ -1,24 +1,46 @@
 import { Routes, Route } from 'react-router-dom'
-import DashboardLayout from './components/layout/DashboardLayout'
-import Dashboard from './pages/Dashboard'
-import EquipmentInventory from './pages/EquipmentInventory'
-import Analytics from './pages/Analytics'
-import Settings from './pages/Settings'
-import { AnimatedBackground } from './components/ui/animated-background'
+import { DashboardLayout } from '@/shared/components/layout'
+import { Dashboard } from '@/features/dashboard'
+import { EquipmentInventory } from '@/features/equipment'
+import { Analytics } from '@/features/analytics'
+import { Settings } from '@/features/settings'
+import { Login, SignUp, SetupOrganization, ProtectedRoute } from '@/features/auth'
+import { ErrorBoundary } from '@/shared'
 
 function App() {
   return (
-    <>
-      <AnimatedBackground />
+    <ErrorBoundary>
       <Routes>
-        <Route path="/" element={<DashboardLayout />}>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Organization setup (requires auth but not org) */}
+        <Route
+          path="/setup-organization"
+          element={
+            <ProtectedRoute requireOrganization={false}>
+              <SetupOrganization />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<Dashboard />} />
           <Route path="equipment" element={<EquipmentInventory />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
-    </>
+    </ErrorBoundary>
   )
 }
 

@@ -26,7 +26,12 @@
       "Bash(timeout 30 npm run dev:*)",
       "WebSearch",
       "Bash(dir:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find:*)",
+      "Bash(findstr:*)",
+      "Bash(tree:*)",
+      "Bash(ls -la \"C:\\Users\\brand\\Documents\\GitHub\\vibe\\co2ai-frontend\\src\\components\"\" | grep \"^d \")"
     ],
     "deny": [],
     "ask": []
