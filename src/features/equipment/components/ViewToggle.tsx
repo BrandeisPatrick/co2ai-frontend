@@ -10,13 +10,13 @@ interface ViewToggleProps {
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ currentView, onViewChange }) => {
   return (
-    <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200">
+    <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700">
       <button
         onClick={() => onViewChange('grid')}
         className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${
           currentView === 'grid'
             ? 'bg-emerald-500 text-white shadow-md'
-            : 'text-gray-700 hover:bg-gray-100'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
         }`}
         title="Grid view"
       >
@@ -27,7 +27,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ currentView, onViewChang
         className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${
           currentView === 'list'
             ? 'bg-emerald-500 text-white shadow-md'
-            : 'text-gray-700 hover:bg-gray-100'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
         }`}
         title="List view"
       >

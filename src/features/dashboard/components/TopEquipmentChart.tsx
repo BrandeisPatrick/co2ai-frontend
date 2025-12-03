@@ -10,9 +10,9 @@ export default function TopEquipmentChart({ data }: TopEquipmentChartProps) {
   return (
     <div className="glass-card rounded-xl p-3 md:p-6">
       <div className="flex items-center justify-between mb-4 md:mb-6">
-        <h2 className="text-base md:text-lg font-semibold text-gray-900">Top Equipment by Emissions</h2>
-        <button className="p-1 md:p-2 hover:bg-gray-100 rounded-lg transition-colors">
-          <ChevronRight size={18} className="md:w-5 md:h-5 text-gray-600" />
+        <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100">Top Equipment by Emissions</h2>
+        <button className="p-1 md:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          <ChevronRight size={18} className="md:w-5 md:h-5 text-gray-600 dark:text-gray-400" />
         </button>
       </div>
       <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 260 : 300}>

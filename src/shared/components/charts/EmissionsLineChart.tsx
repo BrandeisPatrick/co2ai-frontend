@@ -28,10 +28,10 @@ export function EmissionsLineChart({ data, title, unit }: EmissionsLineChartProp
   return (
     <div className="glass-card rounded-lg p-3 md:p-6 hover:shadow-2xl transition-shadow overflow-x-auto">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
-        <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-2 md:mb-0">
+        <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 md:mb-0">
           {title}
         </h2>
-        <span className="text-xs font-medium text-gray-500">{unit}</span>
+        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{unit}</span>
       </div>
       <ResponsiveContainer width="100%" height={isMobile ? 180 : 300} minWidth={300}>
         <LineChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>

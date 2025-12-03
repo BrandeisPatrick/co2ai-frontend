@@ -77,7 +77,7 @@ export default function Analytics() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">No analytics data available</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">No analytics data available</p>
           <button
             onClick={handleRetry}
             className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
@@ -99,8 +99,8 @@ export default function Analytics() {
     <div className="p-4 md:p-6 space-y-6 min-h-screen">
       {/* Header */}
       <div className="mb-8 pt-12 md:pt-0">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Analytics</h1>
-        <p className="text-sm md:text-base text-gray-600">Equipment emissions and energy consumption trends</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Analytics</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Equipment emissions and energy consumption trends</p>
       </div>
 
       {/* Time Range Toggle */}
@@ -112,7 +112,7 @@ export default function Analytics() {
             className={`px-3 md:px-4 py-2 text-sm md:text-base rounded-md font-medium transition-all duration-200 ${
               timeRange === range
                 ? 'bg-emerald-500 text-white shadow-md'
-                : 'text-gray-700 hover:text-gray-900'
+                : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
             }`}
           >
             {range.charAt(0).toUpperCase() + range.slice(1)}
@@ -123,14 +123,14 @@ export default function Analytics() {
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div className="glass-card rounded-lg p-3 md:p-4">
-          <p className="text-gray-600 text-xs md:text-sm mb-1">{timeRange === 'week' ? 'Weekly' : timeRange === 'month' ? 'Monthly' : 'Yearly'} Emissions</p>
-          <p className="text-lg md:text-2xl font-bold text-gray-900">{totalEmissionsFormatted.value}</p>
-          <p className="text-gray-500 text-xs mt-1">{totalEmissionsFormatted.unit}</p>
+          <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm mb-1">{timeRange === 'week' ? 'Weekly' : timeRange === 'month' ? 'Monthly' : 'Yearly'} Emissions</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 dark:text-gray-100">{totalEmissionsFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{totalEmissionsFormatted.unit}</p>
         </div>
         <div className="glass-card rounded-lg p-3 md:p-4">
-          <p className="text-gray-600 text-xs md:text-sm mb-1">Avg Emissions</p>
-          <p className="text-lg md:text-2xl font-bold text-gray-900">{avgEmissionsFormatted.value}</p>
-          <p className="text-gray-500 text-xs mt-1">{avgEmissionsFormatted.unit}</p>
+          <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm mb-1">Avg Emissions</p>
+          <p className="text-lg md:text-2xl font-bold text-gray-900 dark:text-gray-100">{avgEmissionsFormatted.value}</p>
+          <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{avgEmissionsFormatted.unit}</p>
         </div>
       </div>
 

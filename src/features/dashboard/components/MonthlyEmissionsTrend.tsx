@@ -8,7 +8,7 @@ interface MonthlyEmissionsTrendProps {
 export default function MonthlyEmissionsTrend({ data }: MonthlyEmissionsTrendProps) {
   return (
     <div className="glass-card rounded-xl p-3 md:p-6">
-      <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4 md:mb-6">Monthly Emissions Trend</h2>
+      <h2 className="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 md:mb-6">Monthly Emissions Trend</h2>
       <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 200 : 300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />

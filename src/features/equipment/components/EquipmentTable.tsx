@@ -22,17 +22,17 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
     {
       accessorKey: 'name',
       header: 'Equipment Name',
-      cell: (info) => <span className="font-medium text-gray-900">{info.getValue() as string}</span>,
+      cell: (info) => <span className="font-medium text-gray-900 dark:text-gray-100">{info.getValue() as string}</span>,
     },
     {
       accessorKey: 'equipmentId',
       header: 'ID',
-      cell: (info) => <span className="text-gray-600 font-mono text-sm">{info.getValue() as string}</span>,
+      cell: (info) => <span className="text-gray-600 dark:text-gray-400 font-mono text-sm">{info.getValue() as string}</span>,
     },
     {
       accessorKey: 'type',
       header: 'Type',
-      cell: (info) => <span className="text-gray-700">{info.getValue() as string}</span>,
+      cell: (info) => <span className="text-gray-700 dark:text-gray-300">{info.getValue() as string}</span>,
     },
     {
       accessorKey: 'dailyEmissions',
@@ -40,7 +40,7 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
       cell: (info) => {
         const emissions = info.getValue() as { value: number; unit: string }
         return (
-          <span className="text-gray-700">
+          <span className="text-gray-700 dark:text-gray-300">
             {emissions.value} {emissions.unit}
           </span>
         )
@@ -49,7 +49,7 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
     {
       accessorKey: 'manufacturer',
       header: 'Manufacturer',
-      cell: (info) => <span className="text-gray-600 text-sm">{info.getValue() as string}</span>,
+      cell: (info) => <span className="text-gray-600 dark:text-gray-400 text-sm">{info.getValue() as string}</span>,
     },
   ]
 
@@ -67,13 +67,13 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
   return (
     <div className="w-full overflow-x-auto glass-card rounded-lg">
       <table className="w-full">
-        <thead className="bg-white/50 border-b border-white/20">
+        <thead className="bg-white/50 dark:bg-gray-800/50 border-b border-white/20 dark:border-gray-700/20">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="px-4 py-3 text-left text-sm font-semibold text-gray-900"
+                  className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100"
                   style={{
                     cursor: header.column.getCanSort() ? 'pointer' : 'default',
                   }}
@@ -95,7 +95,7 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+              className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="px-4 py-3 text-sm">
@@ -107,7 +107,7 @@ export const EquipmentTable: React.FC<EquipmentTableProps> = ({
         </tbody>
       </table>
       {equipment.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
           No equipment found
         </div>
       )}
